@@ -20,13 +20,18 @@
         android:fontFamily="sans-serif"
         android:textSize="24dp" />
 
-    <Button
-        style="@style/OrangeBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Orange Button"
-        android:id="@+id/OrangeButton"
-        android:layout_below="@+id/top_title"
-        android:layout_alignStart="@+id/top_title"
-        android:layout_marginTop="57dp" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/abc_text_size_display_3_material"
+        android:layout_weight="50"
+        >
+
+    <Button style="@style/OrangeBtn"
+        android:text="new Button"
+        android:id="@+id/orangebtn"
+        android:layout_below="@+id/top_title" />
+    </LinearLayout>
+
 </RelativeLayout>
