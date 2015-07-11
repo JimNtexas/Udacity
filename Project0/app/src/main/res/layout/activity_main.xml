@@ -1,13 +1,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
-    android:background="@color/light_blue_background"
-    >
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity"
+    android:background="@color/light_blue_background">
 
-
+    <!--android:textStyle="bold"-->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,22 +19,67 @@
         android:layout_centerHorizontal="true"
         android:text="@string/top_title"
         android:textColor="@color/top_text_color"
-        android:textStyle="bold"
         android:fontFamily="sans-serif"
         android:textSize="24dp" />
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/abc_text_size_display_3_material"
-        android:layout_weight="50"
+    <LinearLayout android:id="@+id/linear1" style="@style/ButtonHolder"
+        android:layout_below="@+id/top_title">
+
+        <Button style="@style/OrangeBtn"
+            android:text="@string/streamer"
+            android:id="@+id/btnStreamer"
+            android:layout_weight=".7"
+            android:layout_below="@+id/top_title" />
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/linear2" style="@style/ButtonHolder"
+        android:layout_below="@id/linear1">
+
+        <Button style="@style/OrangeBtn"
+            android:text="@string/scores"
+            android:id="@+id/btnScores"
+            android:layout_weight=".7"
+            android:layout_below="@+id/linear2" />
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/linear3" style="@style/ButtonHolder"
+        android:layout_below="@id/linear2">
+
+        <Button style="@style/OrangeBtn"
+            android:text="@string/library"
+            android:id="@+id/btnLibrary"
+            android:layout_weight=".7"
+            android:layout_below="@+id/linear3" />
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/linear4" style="@style/ButtonHolder"
+        android:layout_below="@+id/linear3"
         >
 
-    <Button style="@style/OrangeBtn"
-        android:text="new Button"
-        android:id="@+id/orangebtn"
-        android:layout_below="@+id/top_title" />
+        <Button style="@style/OrangeBtn"
+            android:text="@string/bigger"
+            android:id="@+id/btnBigger"
+            android:layout_weight=".7"
+            android:layout_below="@+id/linear4" />
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/linear5" style="@style/ButtonHolder"
+        android:layout_below="@+id/linear4" >
+        <Button style="@style/OrangeBtn"
+            android:text="@string/xyz"
+            android:id="@+id/btnXyz"
+            android:layout_weight=".7"
+            android:layout_below="@+id/linear5" />
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/linear6" style="@style/ButtonHolder"
+        android:layout_below="@+id/linear5" >
+
+        <Button style="@style/RedBtn"
+            android:text="@string/captstone"
+            android:id="@+id/btnCapstone"
+            android:layout_weight=".7"
+            android:layout_below="@+id/linear6" />
     </LinearLayout>
 
 </RelativeLayout>
