@@ -75,6 +75,7 @@ public class MainActivity extends ActionBarActivity {
 
                 //Start details activity
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
 
