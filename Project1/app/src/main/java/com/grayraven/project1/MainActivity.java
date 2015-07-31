@@ -1,4 +1,5 @@
 package com.grayraven.project1;
+
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -19,8 +20,10 @@ import android.widget.Toast;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,17 +66,21 @@ public class MainActivity extends ActionBarActivity {
 
                 //Pass the image title and url to DetailsActivity
                 Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
-                intent.putExtra("title", item.getOriginalTitle());
-                intent.putExtra("imageUrl", MovieService.getPosterUrl(item.getPosterPath()));
+                intent.putExtra(DetailsActivity.MOVIE_TITLE, item.getOriginalTitle());
+                intent.putExtra(DetailsActivity.MOVIE_URL, MovieService.getPosterUrl(item.getPosterPath()));
+                intent.putExtra(DetailsActivity.MOVIE_PLOT, item.getOverview());
+                intent.putExtra(DetailsActivity.MOVIE_RELEASE_DATE, item.getReleaseDate());
+
+                String rating = Float.toString(item.getVoteAverage());
+                Log.i(TAG, "clicked rating: " + rating);
+                intent.putExtra(DetailsActivity.MOVIE_RATING, rating);
 
                 //Start details activity
                 startActivity(intent);
             }
         });
 
-
         StartMovieService();
-
     }
 
     private void StartMovieService() {

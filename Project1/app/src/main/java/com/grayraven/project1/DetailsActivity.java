@@ -4,13 +4,25 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class DetailsActivity extends ActionBarActivity {
-    private TextView titleTextView;
-    private ImageView imageView;
+
+    public static final String MOVIE_TITLE = "title";
+    public static final String MOVIE_RELEASE_DATE = "release_date";
+    public static final String MOVIE_RATING = "rating";
+    public static final String MOVIE_PLOT = "plot";
+    public static final String MOVIE_URL = "image_url";
+    private static final String TAG = "MovieDetailsActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,12 +32,45 @@ public class DetailsActivity extends ActionBarActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
 
-        String title = getIntent().getStringExtra("title");
-        String imageUrl = getIntent().getStringExtra("imageUrl");
-        titleTextView = (TextView) findViewById(R.id.title);
-        imageView = (ImageView) findViewById(R.id.grid_item_image);
+        String title = getIntent().getStringExtra(MOVIE_TITLE);
+        TextView  titleTextView = (TextView) findViewById(R.id.title);
         titleTextView.setText(Html.fromHtml(title));
 
-        Picasso.with(this).load(imageUrl).into(imageView);
+        String rating = getIntent().getStringExtra(MOVIE_RATING) + " / 10.0";
+        TextView ratingTextView = (TextView) findViewById(R.id.rating);
+        ratingTextView.setText(Html.fromHtml(rating));
+
+        String release = getIntent().getStringExtra(MOVIE_RELEASE_DATE);
+        TextView releaseDateView = (TextView) findViewById(R.id.release_date);
+        releaseDateView.setText(Html.fromHtml(formatDate(release)));
+
+        String plot = getIntent().getStringExtra(MOVIE_PLOT);
+        TextView   plotTextView = (TextView) findViewById(R.id.plot);
+        plotTextView.setText(Html.fromHtml(plot));
+
+        String imageUrl = getIntent().getStringExtra(MOVIE_URL);
+
+        com.grayraven.project1.ImageViewTopCrop imageView = (ImageViewTopCrop) findViewById(R.id.grid_item_image);
+
+
+        Picasso.with(this).load(imageUrl).into((ImageView)imageView);
+        imageView.setImageAlpha(100);
+    }
+    /*
+     * Given a date string in the format yyyy/mm/dd, convert it
+     * to the more common U.S. formate of MMMM dd, yyyy
+     */
+    private String formatDate(String date) {
+        try {
+            SimpleDateFormat curFormater = new SimpleDateFormat("yyyy-mm-dd");
+            Date dateObj = curFormater.parse(date);
+            SimpleDateFormat newFormat = new SimpleDateFormat("MMMM dd, yyyy", Locale.US);
+            String newDate = newFormat.format(dateObj);
+            return newDate;
+
+        } catch (ParseException e) {
+            Log.d(TAG, "formatDate unable to parse date from Movie DB, returning string unchanged");
+            return date;
+        }
     }
 }
