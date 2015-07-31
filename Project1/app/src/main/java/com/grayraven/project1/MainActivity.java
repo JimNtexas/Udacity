@@ -47,8 +47,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = getApplicationContext();
-        Logger logger = LoggerFactory.getLogger(MainActivity.class); //required by themoviedbapi
-        logger.info("Hello MainActivity from SLF4j");
+        @SuppressWarnings("UnusedAssignment") Logger logger = LoggerFactory.getLogger(MainActivity.class); //required by themoviedbapi
 
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter(MovieService.MOVIE_SERVICE_INTENT));
 
@@ -91,6 +90,7 @@ public class MainActivity extends ActionBarActivity {
             ShowLoadingProgress();
             startService(service); } else
         {
+            //TODO: Show a clever error dialog or view
             Toast.makeText(getApplicationContext(), "No internet connection!", Toast.LENGTH_LONG).show();
         }
 

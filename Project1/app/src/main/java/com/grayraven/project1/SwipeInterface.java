@@ -4,7 +4,7 @@ import android.view.View;
 
 public interface SwipeInterface {
 
-    public void left2right(View v);
+    void left2right(View v);
 
   /*  for this app we only need left2right
    *   so no need to clutter up the caller with overrides for these functions

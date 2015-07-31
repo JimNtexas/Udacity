@@ -5,6 +5,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.util.Log;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -14,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class DetailsActivity extends ActionBarActivity {
+public class DetailsActivity extends ActionBarActivity implements SwipeInterface{
 
     public static final String MOVIE_TITLE = "title";
     public static final String MOVIE_RELEASE_DATE = "release_date";
@@ -31,6 +33,10 @@ public class DetailsActivity extends ActionBarActivity {
         ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
         actionBar.hide();
+
+        ActivitySwipeDetector swipe = new ActivitySwipeDetector(this);
+        FrameLayout swipe_layout = (FrameLayout) findViewById(R.id.details_frame);
+        swipe_layout.setOnTouchListener(swipe);
 
         String title = getIntent().getStringExtra(MOVIE_TITLE);
         TextView  titleTextView = (TextView) findViewById(R.id.title);
@@ -80,4 +86,9 @@ public class DetailsActivity extends ActionBarActivity {
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
+    @Override
+    public void left2right(View v) {
+        finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
 }

@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/main_background"
-    android:background="@color/alice_blue"
     android:orientation="vertical">
     <FrameLayout
         android:id="@+id/details_frame"
@@ -12,12 +11,12 @@
         android:layout_height="0dp"
         android:layout_weight="8">
         <RelativeLayout
+            android:id="@+id/inner_relative_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
     <com.grayraven.project1.ImageViewTopCrop
         android:id="@+id/grid_item_image"
-        android:src="@drawable/hobbit"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
          />
@@ -25,20 +24,17 @@
     <TextView
         android:id="@+id/title"
         style="@style/DetailText"
-        android:text="very very very long title goes here"
         />
 
         <TextView
             style="@style/DetailText"
             android:id="@+id/rating"
-            android:text="10.0/10.0"
             android:layout_marginTop="20dp"
             android:layout_below="@id/title"/>
 
         <TextView
             android:id="@+id/release_date"
             style="@style/DetailText"
-            android:text="MMMM dd, yyyy"
             android:layout_marginTop="10dp"
             android:layout_below="@id/rating"/>
         </RelativeLayout>
@@ -50,14 +46,10 @@
     android:layout_height="wrap_content">
     <TextView
         android:id="@+id/plot"
-        android:fontFamily="sans-serif"
+        style="@style/DetailText"
+        android:gravity="left"
         android:textSize="18sp"
-        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:text="bottom text"
-        android:background="@color/alice_blue"
         android:layout_margin="10dp" />
     </ScrollView>
 </LinearLayout>
-
-<!--        android:layout_weight="3" -->
