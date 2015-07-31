@@ -16,13 +16,15 @@ import info.movito.themoviedbapi.model.MovieDb;
 import info.movito.themoviedbapi.model.config.TmdbConfiguration;
 
 /**
+ * Connect with Movie database using theMovieApp api,
+ * download the first page of movies according to the provided parameters
  * Created by jhoward on 7/25/2015.
  */
 public class MovieService  extends IntentService{
 
-    public static final int STATUS_RUNNING = 0;
+    // --Commented out by Inspection (7/31/2015 12:17 PM):public static final int STATUS_RUNNING = 0;
     public static final int STATUS_FINISHED = 1;
-    public static final int STATUS_ERROR = 2;
+    // --Commented out by Inspection (7/31/2015 12:18 PM):public static final int STATUS_ERROR = 2;
     public static final String RESULT_STATUS = "result_status";
     public static final String MOVIE_SERVICE_INTENT = "movie_service";
     public static final String MOVIE_LIST_JSON = "movie_json";
@@ -70,7 +72,6 @@ public class MovieService  extends IntentService{
         LocalBroadcastManager.getInstance(this).sendBroadcast(response);
         Log.i(TAG, "Movie request complete");
         this.stopSelf();
-        return;
     }
 
     private void getMovieDbConfiguration(TmdbApi tmdb) {
@@ -80,8 +81,7 @@ public class MovieService  extends IntentService{
 
     public static String getPosterUrl(String posterPath) {
         final String posterFormat = "http://image.tmdb.org/t/p/w185/%s";
-        String posterUrl = String.format(posterFormat, posterPath);
-        return posterUrl;
+        return String.format(posterFormat, posterPath);
     }
 }
 

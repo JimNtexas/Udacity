@@ -35,10 +35,8 @@ public class MainActivity extends ActionBarActivity {
     private final String TAG = "MovieMain";
     //private final AccountID APITESTS_ACCOUNT = new AccountID(6065849);
     //private final SessionToken APITESTS_TOKEN = new SessionToken("76c5c544e9c1f51d7569989d95a8d10cfb5164e5");
-    private List<MovieDb> mMovies = new ArrayList<MovieDb>();
-    private GridView mGridView;
-    private GridViewAdapter mGridAdapter;
-    private Intent mMovieService;
+    private List<MovieDb> mMovies = new ArrayList<>();
+    private GridViewAdapter gridAdapter;
     private Context mContext;
     private Menu mOptions;
     private String mSortPreference = MovieService.SORT_BY_POPULARITY;
@@ -54,15 +52,15 @@ public class MainActivity extends ActionBarActivity {
 
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter(MovieService.MOVIE_SERVICE_INTENT));
 
-        mGridAdapter = new GridViewAdapter(this, R.layout.grid_item_layout, mMovies);
-        mGridView = (GridView) findViewById(R.id.gridView);
-        mGridView.setAdapter(mGridAdapter);
+        gridAdapter = new GridViewAdapter(this, mMovies);
+        GridView mGridView = (GridView) findViewById(R.id.gridView);
+        mGridView.setAdapter(gridAdapter);
 
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 
                 //Get item at position
-                MovieDb item = mGridAdapter.getMovie(position);
+                MovieDb item = gridAdapter.getMovie(position);
 
                 //Pass the image title and url to DetailsActivity
                 Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
@@ -137,19 +135,16 @@ public class MainActivity extends ActionBarActivity {
                 StartMovieService();
                 break;
         }
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
-        return super.onOptionsItemSelected(item);
+        return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 
-    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
 
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if(action != MovieService.MOVIE_SERVICE_INTENT) {
+            if(!action.equals(MovieService.MOVIE_SERVICE_INTENT)) {
                 Log.d(TAG, "Unknown intent: " + action);
                 return;
             }
@@ -157,7 +152,8 @@ public class MainActivity extends ActionBarActivity {
             int result =  intent.getExtras().getInt(MovieService.RESULT_STATUS);
             String json = intent.getStringExtra(MovieService.MOVIE_LIST_JSON);
             if(result == MovieService.STATUS_FINISHED) {
-                mMovies = (List<MovieDb>) new Gson().fromJson(json, new TypeToken<List<MovieDb>>(){}.getType());
+                //noinspection unchecked
+                mMovies = new Gson().fromJson(json, new TypeToken<List<MovieDb>>(){}.getType());
                 for(MovieDb db : mMovies) {
                     Log.i(TAG, "Title: " + db.getOriginalTitle());
                     Log.i(TAG, "rating : " + db.getVoteAverage());
@@ -170,7 +166,7 @@ public class MainActivity extends ActionBarActivity {
                     Log.i(TAG, "release date: " + db.getReleaseDate());*/
                 }
 
-                mGridAdapter.setGridData(mMovies);
+                gridAdapter.setGridData(mMovies);
             }
         }
 

@@ -11,6 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="8">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
     <com.grayraven.project1.ImageViewTopCrop
         android:id="@+id/grid_item_image"
@@ -22,19 +25,23 @@
     <TextView
         android:id="@+id/title"
         style="@style/DetailText"
-        android:text="title goes here"
+        android:text="very very very long title goes here"
         />
 
         <TextView
             style="@style/DetailText"
             android:id="@+id/rating"
             android:text="10.0/10.0"
-            android:layout_marginTop="70dp" />
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/title"/>
 
         <TextView
             android:id="@+id/release_date"
             style="@style/DetailText"
-            android:layout_marginTop="140dp" />
+            android:text="MMMM dd, yyyy"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/rating"/>
+        </RelativeLayout>
     </FrameLayout>
 
 
@@ -44,8 +51,7 @@
     <TextView
         android:id="@+id/plot"
         android:fontFamily="sans-serif"
-        android:textSize="18dp"
-        android:layout_weight="3"
+        android:textSize="18sp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:text="bottom text"
@@ -53,3 +59,5 @@
         android:layout_margin="10dp" />
     </ScrollView>
 </LinearLayout>
+
+<!--        android:layout_weight="3" -->

@@ -5,7 +5,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.util.Log;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -30,6 +29,7 @@ public class DetailsActivity extends ActionBarActivity {
         setContentView(R.layout.activity_details_view);
 
         ActionBar actionBar = getSupportActionBar();
+        assert actionBar != null;
         actionBar.hide();
 
         String title = getIntent().getStringExtra(MOVIE_TITLE);
@@ -53,20 +53,19 @@ public class DetailsActivity extends ActionBarActivity {
         com.grayraven.project1.ImageViewTopCrop imageView = (ImageViewTopCrop) findViewById(R.id.grid_item_image);
 
 
-        Picasso.with(this).load(imageUrl).into((ImageView)imageView);
-        imageView.setImageAlpha(100);
+        Picasso.with(this).load(imageUrl).into(imageView);
+        imageView.setImageAlpha(128);
     }
     /*
      * Given a date string in the format yyyy/mm/dd, convert it
-     * to the more common U.S. formate of MMMM dd, yyyy
+     * to the more common U.S. format of MMMM dd, yyyy
      */
     private String formatDate(String date) {
         try {
-            SimpleDateFormat curFormater = new SimpleDateFormat("yyyy-mm-dd");
+            SimpleDateFormat curFormater = new SimpleDateFormat("yyyy-mm-dd", Locale.US);
             Date dateObj = curFormater.parse(date);
             SimpleDateFormat newFormat = new SimpleDateFormat("MMMM dd, yyyy", Locale.US);
-            String newDate = newFormat.format(dateObj);
-            return newDate;
+            return newFormat.format(dateObj);
 
         } catch (ParseException e) {
             Log.d(TAG, "formatDate unable to parse date from Movie DB, returning string unchanged");

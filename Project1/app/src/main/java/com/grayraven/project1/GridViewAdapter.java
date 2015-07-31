@@ -4,13 +4,11 @@ package com.grayraven.project1;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,16 +18,16 @@ import java.util.List;
 
 import info.movito.themoviedbapi.model.MovieDb;
 
-public class GridViewAdapter extends ArrayAdapter<MovieDb> {
+class GridViewAdapter extends ArrayAdapter<MovieDb> {
 
-    static final String TAG = "MovieGridView";
-    private Context mContext;
-    private int layoutResourceId;
+    private static final String TAG = "MovieGridView";
+    private final Context mContext;
+    private final int layoutResourceId;
     private List<MovieDb> mMovieData;
 
-    public GridViewAdapter(Context mContext, int layoutResourceId, List<MovieDb> mMovieData) {
-        super(mContext, layoutResourceId, mMovieData);
-        this.layoutResourceId = layoutResourceId;
+    public GridViewAdapter(Context mContext, List<MovieDb> mMovieData) {
+        super(mContext, R.layout.grid_item_layout, mMovieData);
+        this.layoutResourceId = R.layout.grid_item_layout;
         this.mContext = mContext;
         this.mMovieData = mMovieData;
     }
@@ -41,8 +39,6 @@ public class GridViewAdapter extends ArrayAdapter<MovieDb> {
 
     /**
      * Updates grid data and refresh grid items.
-     *
-     * @param mMovieData
      */
     public void setGridData(List<MovieDb> movieData) {
         mMovieData = movieData;

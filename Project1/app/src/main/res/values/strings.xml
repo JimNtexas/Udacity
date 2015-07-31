@@ -3,4 +3,7 @@
     <string name="action_settings">Options</string>
     <string name="loading_movies">Loading Movies</string>
     <string name="loading_msg">Please wait a moment\u2026</string>
+    <string name="popularity_sort">Sort by Popularity</string>
+    <string name="rating_sort">Sort by Highest Rated</string>
+    <string name="poster_content_desc">Image of this movie\&apos;s poster</string>
 </resources>

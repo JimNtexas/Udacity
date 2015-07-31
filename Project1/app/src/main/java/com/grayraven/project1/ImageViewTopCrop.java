@@ -52,8 +52,8 @@ public class ImageViewTopCrop extends ImageView
             usedScaleFactor = Math.max(fitHorizontallyScaleFactor, fitVerticallyScaleFactor);
         }
 
-        float newImageWidth = originalImageWidth * usedScaleFactor;
-        float newImageHeight = originalImageHeight * usedScaleFactor;
+       // float newImageWidth = originalImageWidth * usedScaleFactor;
+       //float newImageHeight = originalImageHeight * usedScaleFactor;
 
         Matrix matrix = getImageMatrix();
         matrix.setScale(usedScaleFactor, usedScaleFactor, 0, 0); // Replaces the old matrix completly

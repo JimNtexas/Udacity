@@ -4,8 +4,8 @@
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="ifRoom" />
     <group android:checkableBehavior="single">
-        <item android:title="Sort by Popularity" android:id="@+id/menuPopularity" android:checkable="true"/>
-        <item android:title="Sort by Highest Rated" android:id="@+id/menuRated" android:checkable="true" />
+        <item android:title="@string/popularity_sort" android:id="@+id/menuPopularity" android:checkable="true"/>
+        <item android:title="@string/rating_sort" android:id="@+id/menuRated" android:checkable="true" />
     </group>
 
 </menu>
