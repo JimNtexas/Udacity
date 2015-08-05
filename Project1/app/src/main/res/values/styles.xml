@@ -15,15 +15,17 @@
     </style>
 
     <style name="DetailText" parent="android:Theme">
-        <item name="android:textColor">@color/movie_dark_blue</item>
         <item name="android:fontFamily">sans-serif</item>
-        <item name="android:textSize">36sp</item>
+        <item name="android:textColor">@color/movie_dark_blue</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center|top</item>
-        <item name="android:gravity">center_horizontal</item>
         <item name ="android:layout_marginTop">10dp</item>
     </style>
 
 
 </resources>
+
+<!-- item name="android:gravity">center_horizontal</item -->

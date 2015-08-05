@@ -12,20 +12,21 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import info.movito.themoviedbapi.model.MovieDb;
 
-class GridViewAdapter extends ArrayAdapter<MovieDb> {
+class GridViewAdapter extends ArrayAdapter<ExtendedMovie> {
 
     private static final String TAG = "MovieGridView";
     private final Context mContext;
     private final int layoutResourceId;
-    private List<MovieDb> mMovieData;
+    private List<ExtendedMovie> mMovieData;
 
-    public GridViewAdapter(Context mContext, List<MovieDb> mMovieData) {
+    public GridViewAdapter(Context mContext, List<ExtendedMovie> mMovieData) {
         super(mContext, R.layout.grid_item_layout, mMovieData);
         this.layoutResourceId = R.layout.grid_item_layout;
         this.mContext = mContext;
@@ -40,7 +41,7 @@ class GridViewAdapter extends ArrayAdapter<MovieDb> {
     /**
      * Updates grid data and refresh grid items.
      */
-    public void setGridData(List<MovieDb> movieData) {
+    public void setGridData(List<ExtendedMovie> movieData) {
         mMovieData = movieData;
         Log.i(TAG, "Grid data count: " + movieData.size());
         notifyDataSetChanged();
@@ -62,7 +63,7 @@ class GridViewAdapter extends ArrayAdapter<MovieDb> {
             holder = (ViewHolder) row.getTag();
         }
 
-        MovieDb movie = mMovieData.get(position);
+        MovieDb movie =  mMovieData.get(position).getMovie();
         holder.titleTextView.setText(Html.fromHtml(movie.getOriginalTitle()));
 
         String path = MovieService.getPosterUrl(movie.getPosterPath());
@@ -72,7 +73,7 @@ class GridViewAdapter extends ArrayAdapter<MovieDb> {
     }
 
     MovieDb getMovie(int position) {
-        return mMovieData.get(position);
+        return mMovieData.get(position).getMovie();
     }
 
     static class ViewHolder {

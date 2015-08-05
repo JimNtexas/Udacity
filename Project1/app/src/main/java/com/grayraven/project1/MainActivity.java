@@ -35,7 +35,7 @@ public class MainActivity extends ActionBarActivity {
     private final String TAG = "MovieMain";
     //private final AccountID APITESTS_ACCOUNT = new AccountID(6065849);
     //private final SessionToken APITESTS_TOKEN = new SessionToken("76c5c544e9c1f51d7569989d95a8d10cfb5164e5");
-    private List<MovieDb> mMovies = new ArrayList<>();
+    private List<ExtendedMovie> mMovies = new ArrayList<>();
     private GridViewAdapter gridAdapter;
     private Context mContext;
     private Menu mOptions;
@@ -67,6 +67,7 @@ public class MainActivity extends ActionBarActivity {
                 intent.putExtra(DetailsActivity.MOVIE_URL, MovieService.getPosterUrl(item.getPosterPath()));
                 intent.putExtra(DetailsActivity.MOVIE_PLOT, item.getOverview());
                 intent.putExtra(DetailsActivity.MOVIE_RELEASE_DATE, item.getReleaseDate());
+                intent.putExtra(DetailsActivity.MOVIE_ID, item.getId());
 
                 String rating = Float.toString(item.getVoteAverage());
                 Log.i(TAG, "clicked rating: " + rating);
@@ -154,13 +155,12 @@ public class MainActivity extends ActionBarActivity {
             String json = intent.getStringExtra(MovieService.MOVIE_LIST_JSON);
             if(result == MovieService.STATUS_FINISHED) {
                 //noinspection unchecked
-                mMovies = new Gson().fromJson(json, new TypeToken<List<MovieDb>>(){}.getType());
-                for(MovieDb db : mMovies) {
+                mMovies = new Gson().fromJson(json, new TypeToken<List<ExtendedMovie>>(){}.getType());
+                for(ExtendedMovie db : mMovies) {
                     Log.i(TAG, "Title: " + db.getOriginalTitle());
-                    Log.i(TAG, "rating : " + db.getVoteAverage());
-                    Log.i(TAG, "popularity: " + db.getPopularity());
-
-                  /*  Log.i(TAG, "thumb: " + db.getPosterPath());
+                    Log.i(TAG, "Number of trailers: "  + db.getNumberOfTrailers());
+                /*    Log.i(TAG, "popularity: " + db.getPopularity());
+                    Log.i(TAG, "thumb: " + db.getPosterPath());
                     Log.i(TAG, "plot : " + db.getOverview() );
                     Log.i(TAG, "rating : " + db.getVoteAverage());
                     Log.i(TAG, "popularity: " + db.getPopularity());
