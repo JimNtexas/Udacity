@@ -1,7 +1,5 @@
 package com.grayraven.project1;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,16 +18,9 @@ public class ExtendedMovie extends MovieDb {
     ExtendedMovie(MovieDb db) {
         mDb = db;
         int id = db.getId();
-        Log.i(TAG, "Constructed " + mDb.getOriginalTitle());
         TmdbApi tmdb = TmdbSingleton.getTmdbInstance();
         if(id > 0) {
             mTrailers = tmdb.getMovies().getVideos(id, "en");
-          /*  if(mTrailers != null && mTrailers.size() > 0) {
-                for(Video v : mTrailers) {
-                    Log.i(TAG, "site: " + v.getSite());
-                    Log.i(TAG, " key: " + v.getKey());
-                    Log.i(TAG, "type: " + v.getType());
-                } */
         }
     }
 
@@ -39,9 +30,5 @@ public class ExtendedMovie extends MovieDb {
 
     public List<Video> getTrailers() {
         return mTrailers;
-    }
-
-    public int getNumberOfTrailers() {
-        return mTrailers == null ? 0 : mTrailers.size();
     }
 }

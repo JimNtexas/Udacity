@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="0dp"
     android:fillViewport="false">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="match_parent">
+
 
         <TextView
             android:id="@+id/title"
@@ -43,7 +40,8 @@
                 android:layout_width="wrap_content"
                 android:layout_gravity="center"
                 android:src="@drawable/poster"
-                android:scaleType="centerInside" />
+                android:scaleType="centerInside"
+                android:paddingLeft="5dp" />
 
 
             <CheckBox
@@ -70,17 +68,47 @@
                 style="@style/DetailText"
                 android:layout_below="@+id/rating"
                 android:text="MMM dd, yyyy"
-                android:layout_alignStart="@+id/check_favorite"
+                android:layout_alignStart="@id/check_favorite"
                 android:layout_marginLeft="16dp" />
 
+            <Button
+                android:id="@+id/button_trailers"
+                android:layout_alignStart="@id/release_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Trailers"
+                style="@style/DetailText"
+                android:layout_below="@+id/release_date"
+                android:clickable="true"
+                android:focusable="true"
+                android:elevation="1dp"
+                android:translationZ="1dp"/>
         </RelativeLayout>
-
-    <TextView
-        android:id="@+id/plot"
-        style="@style/DetailText"
-        android:gravity="left"
-        android:textSize="18sp"
-        android:text="detail text about the movie here"
-        android:layout_margin="10dp" />
-</LinearLayout>
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/plot"
+                style="@style/DetailText"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:gravity="fill|left"
+                android:layout_gravity="fill"
+                android:textSize="18sp"
+                android:layout_below="@id/poster"
+                android:text="detail text about the movie here"
+                android:layout_margin="10dp"
+                android:padding="10dp" />
     </ScrollView>
+
+
+    </LinearLayout>
+
+<!-- ListView
+android:id="@+id/trailer_list"
+android:layout_width="fill_parent"
+android:layout_height="match_parent"
+style="@style/DetailText"
+android:layout_marginTop="10dp">
+</ListView -->
+

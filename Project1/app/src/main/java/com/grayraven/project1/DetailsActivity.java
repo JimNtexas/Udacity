@@ -7,11 +7,18 @@ import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
+
+import info.movito.themoviedbapi.model.Video;
 
 public class DetailsActivity extends ActionBarActivity implements SwipeInterface{
 
@@ -21,7 +28,12 @@ public class DetailsActivity extends ActionBarActivity implements SwipeInterface
     public static final String MOVIE_PLOT = "plot";
     public static final String MOVIE_URL = "image_url";
     public static final String MOVIE_ID = "movie_id";
+    public static final String MOVIE_TRAILER_JSON = "trailer_json";
+
     private static final String TAG = "MovieDetailsActivity";
+    private String mVideoListJson;
+    private Button btnTrailers = null;
+    TrailerDialogFragment mTrailerFragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +71,42 @@ public class DetailsActivity extends ActionBarActivity implements SwipeInterface
         Picasso.with(this).load(imageUrl).into(posterView);
       //  imageView.setImageAlpha(128);
 
-        Log.i(TAG, "Trailers for: todo " + title);
+       // Log.i(TAG, "Trailers for: " + title);
+        mVideoListJson = getIntent().getStringExtra(MOVIE_TRAILER_JSON);
+        List<Video> trailers  = new Gson().fromJson(mVideoListJson, new TypeToken<List<Video>>() {
+        }.getType());
+       /* if(trailers != null) {
+            for (Video v : trailers) {
+                Log.i(TAG, "site: " + v.getSite());
+                Log.i(TAG, " key: " + v.getKey());
+                Log.i(TAG, "type: " + v.getType());
+            }
+        }*/
 
+        btnTrailers = (Button) findViewById(R.id.button_trailers);
+        btnTrailers.setVisibility((trailers != null && trailers.size() > 0) ? View.VISIBLE : View.INVISIBLE);
+        btnTrailers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTrailerDialog(mVideoListJson);
+            }
+        });
+    }
+
+
+    private void showTrailerDialog(String json) {
+        Log.i(TAG, "Trailer Dlg button pressed ======================================");
+       /* FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("trailer_dlg");
+        if (prev != null) {
+            ft.remove(prev);
+        }*/
+
+        // Create and show the dialog.
+       // FragmentTransaction ft = getFragmentManager().beginTransaction();
+        TrailerDialogFragment newFragment = TrailerDialogFragment.newInstance(json);
+        newFragment.show(getSupportFragmentManager(),"trailer_dlg");
     }
 
     /*
@@ -76,23 +122,6 @@ public class DetailsActivity extends ActionBarActivity implements SwipeInterface
         return result;
     }
 
-    /*private List<Video> getTrailers(int id) {
-        List<Video> vids = null;
-        if(id > 0) {
-            TmdbApi tmdb = TmdbSingleton.getTmdbInstance();
-            vids = tmdb.getMovies().getVideos(id, "");
-            if(vids != null && vids.size() > 0) {
-                for(Video v : vids) {
-                    Log.i(TAG, "site: " + v.getSite());
-                    Log.i(TAG, " key: " + v.getKey());
-                    Log.i(TAG, "type: " + v.getType());
-                }
-            }
-        }
-       return vids;
-    }*/
-
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -104,4 +133,5 @@ public class DetailsActivity extends ActionBarActivity implements SwipeInterface
         finish();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
+
 }

@@ -69,6 +69,9 @@ public class MainActivity extends ActionBarActivity {
                 intent.putExtra(DetailsActivity.MOVIE_RELEASE_DATE, item.getReleaseDate());
                 intent.putExtra(DetailsActivity.MOVIE_ID, item.getId());
 
+                String json =  new Gson().toJson(gridAdapter.getTrailers(position));
+                intent.putExtra(DetailsActivity.MOVIE_TRAILER_JSON, json);
+
                 String rating = Float.toString(item.getVoteAverage());
                 Log.i(TAG, "clicked rating: " + rating);
                 intent.putExtra(DetailsActivity.MOVIE_RATING, rating);
@@ -156,16 +159,16 @@ public class MainActivity extends ActionBarActivity {
             if(result == MovieService.STATUS_FINISHED) {
                 //noinspection unchecked
                 mMovies = new Gson().fromJson(json, new TypeToken<List<ExtendedMovie>>(){}.getType());
-                for(ExtendedMovie db : mMovies) {
-                    Log.i(TAG, "Title: " + db.getOriginalTitle());
-                    Log.i(TAG, "Number of trailers: "  + db.getNumberOfTrailers());
-                /*    Log.i(TAG, "popularity: " + db.getPopularity());
+               /* for(ExtendedMovie db : mMovies) {
+                     Log.i(TAG, "Title: " + db.getOriginalTitle());
+                    Log.i(TAG, "Number of trailers: "  + db.getTrailers().size());
+                    Log.i(TAG, "popularity: " + db.getPopularity());
                     Log.i(TAG, "thumb: " + db.getPosterPath());
                     Log.i(TAG, "plot : " + db.getOverview() );
                     Log.i(TAG, "rating : " + db.getVoteAverage());
                     Log.i(TAG, "popularity: " + db.getPopularity());
-                    Log.i(TAG, "release date: " + db.getReleaseDate());*/
-                }
+                    Log.i(TAG, "release date: " + db.getReleaseDate());
+                } */
 
                 gridAdapter.setGridData(mMovies);
             }

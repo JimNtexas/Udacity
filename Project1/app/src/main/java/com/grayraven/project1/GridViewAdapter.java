@@ -1,7 +1,6 @@
 package com.grayraven.project1;
 
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.text.Html;
@@ -18,6 +17,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import info.movito.themoviedbapi.model.MovieDb;
+import info.movito.themoviedbapi.model.Video;
 
 class GridViewAdapter extends ArrayAdapter<ExtendedMovie> {
 
@@ -74,6 +74,10 @@ class GridViewAdapter extends ArrayAdapter<ExtendedMovie> {
 
     MovieDb getMovie(int position) {
         return mMovieData.get(position).getMovie();
+    }
+
+    public List<Video> getTrailers(int position) {
+        return mMovieData.get(position).getTrailers();
     }
 
     static class ViewHolder {

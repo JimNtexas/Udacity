@@ -1,6 +1,8 @@
 package com.grayraven.project1;
 
+import android.graphics.Point;
 import android.util.Log;
+import android.widget.ImageView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,5 +45,21 @@ public class MovieUtils {
             Log.d(TAG, "formatDate unable to parse date from Movie DB, returning string unchanged");
             return date;
         }
+    }
+
+    /*
+     * Given an ImageView, return the size of the image as currently scaled
+     */
+    public static Point getSizeOfImageView(ImageView imageView) {
+        
+        int imageViewHeight= imageView.getMeasuredHeight();
+        int imageViewWidth=imageView.getMeasuredWidth();
+        int imageHeight=imageView.getDrawable().getIntrinsicHeight();//original height of underlying image
+        int imageWidth=imageView.getDrawable().getIntrinsicWidth();//original width of underlying image
+
+        if (imageViewHeight/imageHeight<=imageViewWidth/imageWidth) imageViewWidth=imageWidth*imageViewHeight/imageHeight;//rescaled width of image within ImageView
+        else imageViewHeight= imageHeight*imageViewWidth/imageWidth;//rescaled height of image within ImageView
+
+        return new Point(imageViewWidth, imageViewHeight);
     }
 }

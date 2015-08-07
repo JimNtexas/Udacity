@@ -60,13 +60,6 @@ public class MovieService  extends IntentService{
             mymovies.add(new ExtendedMovie(db));
         }
 
-
-       /*     Log.i(TAG, "thumb: " + db.getPosterPath());
-            Log.i(TAG, "plot : " + db.getOverview() );
-            Log.i(TAG, "rating : " + db.getVoteAverage());
-            Log.i(TAG, "popularity: " + db.getPopularity());
-            Log.i(TAG, "release date: " + db.getReleaseDate());
-        }*/
         Intent response = new Intent(MOVIE_SERVICE_INTENT);
         String json = new Gson().toJson(mymovies);
         response.putExtra(RESULT_STATUS, STATUS_FINISHED);
