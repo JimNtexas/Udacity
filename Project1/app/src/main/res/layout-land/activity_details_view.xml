@@ -75,6 +75,18 @@
             android:layout_alignStart="@+id/check_favorite"
             android:layout_marginLeft="16dp" />
 
+<Button
+                android:id="@+id/button_trailers"
+                android:layout_alignStart="@id/release_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Trailers"
+                style="@style/DetailText"
+                android:layout_below="@+id/release_date"
+                android:clickable="true"
+                android:focusable="true"
+                android:elevation="1dp"
+                android:translationZ="1dp"/>
         <TextView
             android:id="@+id/plot"
             style="@style/DetailText"

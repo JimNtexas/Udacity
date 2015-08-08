@@ -2,6 +2,7 @@ package com.grayraven.project1;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
@@ -34,6 +35,7 @@ public class DetailsActivity extends ActionBarActivity implements SwipeInterface
     private String mVideoListJson;
     private Button btnTrailers = null;
     TrailerDialogFragment mTrailerFragment = null;
+    TrailerDialogFragment mDf = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,13 +77,6 @@ public class DetailsActivity extends ActionBarActivity implements SwipeInterface
         mVideoListJson = getIntent().getStringExtra(MOVIE_TRAILER_JSON);
         List<Video> trailers  = new Gson().fromJson(mVideoListJson, new TypeToken<List<Video>>() {
         }.getType());
-       /* if(trailers != null) {
-            for (Video v : trailers) {
-                Log.i(TAG, "site: " + v.getSite());
-                Log.i(TAG, " key: " + v.getKey());
-                Log.i(TAG, "type: " + v.getType());
-            }
-        }*/
 
         btnTrailers = (Button) findViewById(R.id.button_trailers);
         btnTrailers.setVisibility((trailers != null && trailers.size() > 0) ? View.VISIBLE : View.INVISIBLE);
@@ -94,19 +89,22 @@ public class DetailsActivity extends ActionBarActivity implements SwipeInterface
     }
 
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if(mDf != null) {
+            mDf.dismiss();
+        }
+    }
+
     private void showTrailerDialog(String json) {
         Log.i(TAG, "Trailer Dlg button pressed ======================================");
-       /* FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        Fragment prev = getFragmentManager().findFragmentByTag("trailer_dlg");
-        if (prev != null) {
-            ft.remove(prev);
-        }*/
+        mDf = new TrailerDialogFragment().newInstance(json);
+        Fragment fr = getSupportFragmentManager().findFragmentByTag(TrailerDialogFragment.TAG);
+        if (fr == null) {
+            mDf.show(getSupportFragmentManager(), TrailerDialogFragment.TAG);
+        }
 
-        // Create and show the dialog.
-       // FragmentTransaction ft = getFragmentManager().beginTransaction();
-        TrailerDialogFragment newFragment = TrailerDialogFragment.newInstance(json);
-        newFragment.show(getSupportFragmentManager(),"trailer_dlg");
     }
 
     /*
