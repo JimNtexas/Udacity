@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -51,7 +52,7 @@ public class TrailerAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View view, ViewGroup parent) {
          final TextView nameView;
-         final TextView typeView;
+         final ImageView siteView;
 
         if(view == null) {
             LayoutInflater li = (LayoutInflater) mContext
@@ -59,27 +60,27 @@ public class TrailerAdapter extends BaseAdapter {
             view = li.inflate(R.layout.trailer_item_layout,null);
 
             nameView = (TextView) view.findViewById(R.id.trailer_name);
-            typeView = (TextView) view.findViewById(R.id.trailer_type);
-            view.setTag(new ViewHolder(nameView,typeView));
+            siteView = (ImageView) view.findViewById(R.id.site_image);
+            view.setTag(new ViewHolder(nameView,siteView));
         } else {
             ViewHolder holder = (ViewHolder) view.getTag();
             nameView = holder.nameView;
-            typeView = holder.typeView;
+            siteView = holder.logoView;
         }
 
         Video video = getItem(position);
         nameView.setText(video.getName());
-        typeView.setText(video.getType());
+        siteView.setImageResource(R.drawable.youtube);
         return view;
     }
 
     private static class ViewHolder {
         public final TextView nameView;
-        public final TextView typeView;
+        public final ImageView logoView;
 
-        public ViewHolder(TextView name, TextView type) {
+        public ViewHolder(TextView name, ImageView site) {
             this.nameView = name;
-            this.typeView = type;
+            this.logoView = site;
         }
     }
 }

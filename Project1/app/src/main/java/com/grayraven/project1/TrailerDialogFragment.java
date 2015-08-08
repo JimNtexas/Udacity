@@ -1,14 +1,19 @@
 package com.grayraven.project1;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -24,6 +29,19 @@ public class TrailerDialogFragment extends DialogFragment implements AdapterView
     ListView mTrailerList = null;
     List<Video> mVideos = null;
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        TextView textView = (TextView) this.getDialog().findViewById(android.R.id.title);
+        if(textView != null)
+        {
+            textView.setText("View Trailer");
+            textView.setGravity(Gravity.CENTER);
+            textView.setTextColor(getResources().getColor(R.color.movie_light_text));
+            textView.setBackgroundColor(getResources().getColor(R.color.movie_blue_background));
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -34,12 +52,15 @@ public class TrailerDialogFragment extends DialogFragment implements AdapterView
         mVideos  = new Gson().fromJson(mJson, new TypeToken<List<Video>>() {
         }.getType());
 
-        getDialog().setTitle("Select a Trailer to View");
         TrailerAdapter adapter = new TrailerAdapter(getActivity(),mVideos);
         mTrailerList.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         mTrailerList.setOnItemClickListener(this);
         return v;
+    }
+
+    private void setDialogTitle(TextView v) {
+
     }
 
     public static TrailerDialogFragment newInstance(String json) {
@@ -58,6 +79,15 @@ public class TrailerDialogFragment extends DialogFragment implements AdapterView
         Log.i(TAG, "Trailer name: " + vid.getName());
         Log.i(TAG, "Trailer  key: " + vid.getKey());
         Log.i(TAG, "Trailer site: " + vid.getSite());
+        Log.i(TAG, "Trailer type: " + vid.getType());
+
+        Log.i(TAG, "show movie");
+        if(vid.getSite().equals("YouTube") ) {
+            String url = "http://www.youtube.com/watch?v=" + vid.getKey();
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+        } else {
+            Toast.makeText(getActivity(),"Unfortunately this video type is not yet supported: " + vid.getSite(), Toast.LENGTH_SHORT).show();
+        }
     }
 
 

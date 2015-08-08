@@ -170,6 +170,8 @@ public class MainActivity extends ActionBarActivity {
                     Log.i(TAG, "release date: " + db.getReleaseDate());
                 } */
 
+
+
                 gridAdapter.setGridData(mMovies);
             }
         }

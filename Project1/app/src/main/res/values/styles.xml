@@ -25,7 +25,5 @@
         <item name ="android:layout_marginTop">10dp</item>
     </style>
 
-
 </resources>
 
-<!-- item name="android:gravity">center_horizontal</item -->

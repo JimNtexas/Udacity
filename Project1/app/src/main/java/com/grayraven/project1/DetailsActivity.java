@@ -2,11 +2,9 @@ package com.grayraven.project1;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -35,7 +33,6 @@ public class DetailsActivity extends ActionBarActivity implements SwipeInterface
     private String mVideoListJson;
     private Button btnTrailers = null;
     TrailerDialogFragment mTrailerFragment = null;
-    TrailerDialogFragment mDf = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,12 +65,9 @@ public class DetailsActivity extends ActionBarActivity implements SwipeInterface
 
         String imageUrl = getIntent().getStringExtra(MOVIE_URL);
 
-        //com.grayraven.project1.ImageViewTopCrop imageView = (ImageViewTopCrop) findViewById(R.id.grid_item_image);
         ImageView posterView = (ImageView) findViewById(R.id.poster);
         Picasso.with(this).load(imageUrl).into(posterView);
-      //  imageView.setImageAlpha(128);
 
-       // Log.i(TAG, "Trailers for: " + title);
         mVideoListJson = getIntent().getStringExtra(MOVIE_TRAILER_JSON);
         List<Video> trailers  = new Gson().fromJson(mVideoListJson, new TypeToken<List<Video>>() {
         }.getType());
@@ -89,23 +83,15 @@ public class DetailsActivity extends ActionBarActivity implements SwipeInterface
     }
 
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        if(mDf != null) {
-            mDf.dismiss();
-        }
-    }
-
     private void showTrailerDialog(String json) {
-        Log.i(TAG, "Trailer Dlg button pressed ======================================");
-        mDf = new TrailerDialogFragment().newInstance(json);
-        Fragment fr = getSupportFragmentManager().findFragmentByTag(TrailerDialogFragment.TAG);
+        TrailerDialogFragment df = new TrailerDialogFragment().newInstance(json);
+        android.support.v4.app.Fragment fr = getSupportFragmentManager().findFragmentByTag(TrailerDialogFragment.TAG);
         if (fr == null) {
-            mDf.show(getSupportFragmentManager(), TrailerDialogFragment.TAG);
+            df.show(getSupportFragmentManager(), TrailerDialogFragment.TAG);
         }
 
     }
+
 
     /*
      * return date string based on screen orientation

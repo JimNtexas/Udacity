@@ -1,5 +1,7 @@
 package com.grayraven.project1;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +10,7 @@ import info.movito.themoviedbapi.model.MovieDb;
 import info.movito.themoviedbapi.model.Video;
 
 /**
- * Extends MoviveDB to include the list of movie trailers
+ * Extends MovieDb to include the list of movie trailers
  */
 public class ExtendedMovie extends MovieDb {
     private final String TAG = "MovieExtendedDb";
@@ -21,6 +23,13 @@ public class ExtendedMovie extends MovieDb {
         TmdbApi tmdb = TmdbSingleton.getTmdbInstance();
         if(id > 0) {
             mTrailers = tmdb.getMovies().getVideos(id, "en");
+            //TODO: remove before release
+            for(Video vid: mTrailers)
+            {
+                if(!vid.getSite().equalsIgnoreCase("YouTube")) {
+                    Log.i(TAG, "STOP!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                }
+            }
         }
     }
 
