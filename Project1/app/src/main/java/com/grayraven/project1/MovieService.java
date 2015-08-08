@@ -22,9 +22,7 @@ import info.movito.themoviedbapi.model.MovieDb;
  */
 public class MovieService  extends IntentService{
 
-    // --Commented out by Inspection (7/31/2015 12:17 PM):public static final int STATUS_RUNNING = 0;
     public static final int STATUS_FINISHED = 1;
-    // --Commented out by Inspection (7/31/2015 12:18 PM):public static final int STATUS_ERROR = 2;
     public static final String RESULT_STATUS = "result_status";
     public static final String MOVIE_SERVICE_INTENT = "movie_service";
     public static final String MOVIE_LIST_JSON = "movie_json";

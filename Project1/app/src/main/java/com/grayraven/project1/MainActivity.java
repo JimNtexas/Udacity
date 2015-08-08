@@ -5,9 +5,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -33,18 +35,22 @@ import info.movito.themoviedbapi.model.MovieDb;
 public class MainActivity extends ActionBarActivity {
 
     private final String TAG = "MovieMain";
-    //private final AccountID APITESTS_ACCOUNT = new AccountID(6065849);
-    //private final SessionToken APITESTS_TOKEN = new SessionToken("76c5c544e9c1f51d7569989d95a8d10cfb5164e5");
     private List<ExtendedMovie> mMovies = new ArrayList<>();
     private GridViewAdapter gridAdapter;
     private Context mContext;
     private Menu mOptions;
-    private String mSortPreference = MovieService.SORT_BY_POPULARITY;
+    private String mSortPreference;
     private ProgressDialog mLoadProgress;
+    private final String ACTIVITY_SORT_PREFERENCE = "activity_sort_pref";
+    SharedPreferences mPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        mSortPreference = mPrefs.getString(ACTIVITY_SORT_PREFERENCE, MovieService.SORT_BY_POPULARITY);
+
         setContentView(R.layout.activity_main);
         mContext = getApplicationContext();
         @SuppressWarnings("UnusedAssignment") Logger logger = LoggerFactory.getLogger(MainActivity.class); //required by themoviedbapi
@@ -104,7 +110,17 @@ public class MainActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        menu.findItem(R.id.menuPopularity).setChecked(true);
+      //  mOptions.findItem(R.id.menuPopularity).setChecked(false);
+       // mOptions.findItem(R.id.menuRated).setChecked(false);
+        mSortPreference = mPrefs.getString(ACTIVITY_SORT_PREFERENCE, MovieService.SORT_BY_POPULARITY);
+        if(mSortPreference.equals(MovieService.SORT_BY_POPULARITY)) {
+            menu.findItem(R.id.menuPopularity).setChecked(true);
+            menu.findItem(R.id.menuRated).setChecked(false);
+        } else {
+            menu.findItem(R.id.menuRated).setChecked(true);
+            menu.findItem(R.id.menuPopularity).setChecked(false);
+        }
+        mOptions = menu;
         return true;
     }
 
@@ -121,8 +137,6 @@ public class MainActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        mOptions.findItem(R.id.menuPopularity).setChecked(false);
-        mOptions.findItem(R.id.menuRated).setChecked(false);
         switch(id) {
             case R.id.action_settings:
                 Log.i(TAG,"action settings");
@@ -131,16 +145,18 @@ public class MainActivity extends ActionBarActivity {
                 Log.i(TAG, "popularity");
                 mSortPreference = MovieService.SORT_BY_POPULARITY;
                 item.setChecked(true);
+                mOptions.findItem(R.id.menuRated).setChecked(false);
                 StartMovieService();
                 break;
             case R.id.menuRated:
                 Log.i(TAG, "rated");
                 mSortPreference = MovieService.SORT_BY_USER_RATING;
+                mOptions.findItem(R.id.menuPopularity).setChecked(false);
                 item.setChecked(true);
                 StartMovieService();
                 break;
         }
-
+        mPrefs.edit().putString(ACTIVITY_SORT_PREFERENCE, mSortPreference).commit();
         return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 
