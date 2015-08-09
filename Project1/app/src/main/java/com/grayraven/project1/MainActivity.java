@@ -98,7 +98,8 @@ public class MainActivity extends ActionBarActivity {
             service.setPackage("com.grayraven.project1");
             Log.i(TAG, "starting service");
             ShowLoadingProgress();
-            startService(service); } else
+            startService(service);
+        } else
         {
             //TODO: Show a clever error dialog or view
             Toast.makeText(getApplicationContext(), "No internet connection!", Toast.LENGTH_LONG).show();
@@ -108,7 +109,7 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+       // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
       //  mOptions.findItem(R.id.menuPopularity).setChecked(false);
        // mOptions.findItem(R.id.menuRated).setChecked(false);
@@ -126,9 +127,8 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
         mOptions = menu;
-        return true;
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -189,6 +189,9 @@ public class MainActivity extends ActionBarActivity {
 
 
                 gridAdapter.setGridData(mMovies);
+            } else if(result == MovieService.STATUS_API_ERROR) {
+                String msg = intent.getStringExtra(MovieService.SERVICE_ERROR);
+                Toast.makeText(mContext, "Unable to contact movie database server: " + msg,Toast.LENGTH_LONG).show();
             }
         }
 

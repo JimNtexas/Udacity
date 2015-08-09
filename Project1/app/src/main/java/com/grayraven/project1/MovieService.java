@@ -14,6 +14,7 @@ import java.util.List;
 import info.movito.themoviedbapi.TmdbApi;
 import info.movito.themoviedbapi.model.Discover;
 import info.movito.themoviedbapi.model.MovieDb;
+import info.movito.themoviedbapi.model.core.ResponseStatusException;
 
 /**
  * Connect with Movie database using theMovieApp api,
@@ -23,6 +24,8 @@ import info.movito.themoviedbapi.model.MovieDb;
 public class MovieService  extends IntentService{
 
     public static final int STATUS_FINISHED = 1;
+    public static final int STATUS_API_ERROR = 2;
+    public static final String SERVICE_ERROR = "service_error";
     public static final String RESULT_STATUS = "result_status";
     public static final String MOVIE_SERVICE_INTENT = "movie_service";
     public static final String MOVIE_LIST_JSON = "movie_json";
@@ -38,15 +41,24 @@ public class MovieService  extends IntentService{
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
+    protected void onHandleIntent(Intent intent)  {
         Log.i(TAG, "Movie Service Start");
 
         String sortBy = intent.getStringExtra(SORT_PREFERENCE);
         if(sortBy == null) {
             sortBy = SORT_BY_POPULARITY;
         }
-
-        TmdbApi tmdb = TmdbSingleton.getTmdbInstance();
+        TmdbApi tmdb = null;
+        try {
+            tmdb = TmdbSingleton.getTmdbInstance();
+        } catch (ResponseStatusException e) {
+            Intent response = new Intent(MOVIE_SERVICE_INTENT);
+            response.putExtra(RESULT_STATUS, STATUS_API_ERROR);
+            response.putExtra(SERVICE_ERROR, e.getMessage());
+            LocalBroadcastManager.getInstance(this).sendBroadcast(response);
+            Log.e(TAG, "Movie service error");
+            this.stopSelf();
+        }
         Discover discover = new Discover();
         discover.page(1);
         discover.sortBy(sortBy); // vote_average.desc
