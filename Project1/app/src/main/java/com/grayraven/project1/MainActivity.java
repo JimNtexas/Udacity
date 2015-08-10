@@ -43,6 +43,7 @@ public class MainActivity extends ActionBarActivity {
     private ProgressDialog mLoadProgress;
     private final String ACTIVITY_SORT_PREFERENCE = "activity_sort_pref";
     SharedPreferences mPrefs;
+    private boolean mTablet = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,10 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         mContext = getApplicationContext();
         @SuppressWarnings("UnusedAssignment") Logger logger = LoggerFactory.getLogger(MainActivity.class); //required by themoviedbapi
+
+        if(findViewById(R.id.tablet_detail) != null) {
+            mTablet = true;
+        }
 
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter(MovieService.MOVIE_SERVICE_INTENT));
 
@@ -203,8 +208,6 @@ public class MainActivity extends ActionBarActivity {
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
     }
-
-
 
     private void ShowLoadingProgress() {
         mLoadProgress = new ProgressDialog(this);

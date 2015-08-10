@@ -104,11 +104,3 @@
 
     </LinearLayout>
 
-<!-- ListView
-android:id="@+id/trailer_list"
-android:layout_width="fill_parent"
-android:layout_height="match_parent"
-style="@style/DetailText"
-android:layout_marginTop="10dp">
-</ListView -->
-
