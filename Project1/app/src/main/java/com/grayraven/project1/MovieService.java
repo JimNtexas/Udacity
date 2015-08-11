@@ -32,6 +32,8 @@ public class MovieService  extends IntentService{
     public static final String SORT_PREFERENCE = "sort_pref";
     public static final String SORT_BY_POPULARITY = "popularity.desc";
     public static final String SORT_BY_USER_RATING = "vote_average.desc";
+    public static final String POSTER_SIZE_STANDARD = "w185";
+    public static final String POSTER_SIZE_SMALL = "w154";
     private static final int MIN_VOTE_CNT = 1000;
 
     private static final String TAG = "MovieService";
@@ -79,9 +81,10 @@ public class MovieService  extends IntentService{
         this.stopSelf();
     }
 
-    public static String getPosterUrl(String posterPath) {
-        final String posterFormat = "http://image.tmdb.org/t/p/w185/%s";
-        return String.format(posterFormat, posterPath);
+    public static String getPosterUrl(String posterPath, String size ) {
+        final String posterFormat = "http://image.tmdb.org/t/p/%s/%s"; //w154 or w185
+        String url = String.format(posterFormat, posterPath, size);
+        return url;
     }
 }
 

@@ -11,7 +11,11 @@
     <!--
    This layout is a two-pane layout for the Items master/detail flow.
    -->
-
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3">
     <!-- Grid View -->
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
@@ -39,13 +43,15 @@
                 android:layout_centerInParent="true"
                 android:visibility="gone"/>
         </RelativeLayout>
+    </LinearLayout>
 
     <!-- movie detail view -->
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/tablet_detail"
+        android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="4" />
-    <!--  end detail view -->
+        android:layout_weight="4" >
+    </LinearLayout>
 
 </LinearLayout>

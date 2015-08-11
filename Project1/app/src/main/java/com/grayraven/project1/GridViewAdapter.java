@@ -66,7 +66,7 @@ class GridViewAdapter extends ArrayAdapter<ExtendedMovie> {
         MovieDb movie =  mMovieData.get(position).getMovie();
         holder.titleTextView.setText(Html.fromHtml(movie.getOriginalTitle()));
 
-        String path = MovieService.getPosterUrl(movie.getPosterPath());
+        String path = MovieService.getPosterUrl(MovieService.POSTER_SIZE_STANDARD,movie.getPosterPath());
         Picasso.with(mContext).load(path).into(holder.imageView);
 
         return row;

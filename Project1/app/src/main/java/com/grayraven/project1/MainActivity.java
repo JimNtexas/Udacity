@@ -58,6 +58,9 @@ public class MainActivity extends ActionBarActivity {
 
         if(findViewById(R.id.tablet_detail) != null) {
             mTablet = true;
+            DetailsFragment fragment = new DetailsFragment();
+            getSupportFragmentManager().beginTransaction()
+                  .replace(R.id.tablet_detail, fragment, DetailsFragment.TAG).commit();
         }
 
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter(MovieService.MOVIE_SERVICE_INTENT));
@@ -65,31 +68,50 @@ public class MainActivity extends ActionBarActivity {
         gridAdapter = new GridViewAdapter(this, mMovies);
         GridView mGridView = (GridView) findViewById(R.id.gridView);
         mGridView.setAdapter(gridAdapter);
-
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 
                 //Get item at position
                 MovieDb item = gridAdapter.getMovie(position);
-
-                //Pass the image title and url to DetailsActivity
-                Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
-                intent.putExtra(DetailsActivity.MOVIE_TITLE, item.getOriginalTitle());
-                intent.putExtra(DetailsActivity.MOVIE_URL, MovieService.getPosterUrl(item.getPosterPath()));
-                intent.putExtra(DetailsActivity.MOVIE_PLOT, item.getOverview());
-                intent.putExtra(DetailsActivity.MOVIE_RELEASE_DATE, item.getReleaseDate());
-                intent.putExtra(DetailsActivity.MOVIE_ID, item.getId());
-
-                String json =  new Gson().toJson(gridAdapter.getTrailers(position));
-                intent.putExtra(DetailsActivity.MOVIE_TRAILER_JSON, json);
-
+                String json = new Gson().toJson(gridAdapter.getTrailers(position));
+                String title = item.getOriginalTitle();
+                String url;
+                String plot = item.getOverview();
+                String releaseDate = item.getReleaseDate();
+                int movieId = item.getId();
                 String rating = Float.toString(item.getVoteAverage());
-                Log.i(TAG, "clicked rating: " + rating);
-                intent.putExtra(DetailsActivity.MOVIE_RATING, rating);
 
-                //Start details activity
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                if(mTablet) {
+                    Bundle args = new Bundle();
+                    args.putString(DetailsActivity.MOVIE_TITLE, title);
+                    args.putString(DetailsActivity.MOVIE_TRAILER_JSON, json);
+                    url = MovieService.getPosterUrl(MovieService.POSTER_SIZE_SMALL,item.getPosterPath());
+                    args.putString(DetailsActivity.MOVIE_URL,url);
+                    args.putString(DetailsActivity.MOVIE_PLOT,plot);
+                    args.putString(DetailsActivity.MOVIE_RELEASE_DATE, releaseDate);
+                    args.putInt(DetailsActivity.MOVIE_ID, movieId);
+                    args.putString(DetailsActivity.MOVIE_RATING, rating);
+                    DetailsFragment fragment = new DetailsFragment();
+                    fragment.setArguments(args);
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.tablet_detail, fragment, DetailsFragment.TAG).commit();
+
+                } else {
+
+                    //Pass the image title and url to DetailsActivity
+                    Intent intent = new Intent(MainActivity.this, DetailsActivity.class);
+                    intent.putExtra(DetailsActivity.MOVIE_TITLE, title);
+                    url = MovieService.getPosterUrl(MovieService.POSTER_SIZE_STANDARD, item.getPosterPath());
+                    intent.putExtra(DetailsActivity.MOVIE_URL, url);
+                    intent.putExtra(DetailsActivity.MOVIE_PLOT,plot);
+                    intent.putExtra(DetailsActivity.MOVIE_RELEASE_DATE, releaseDate);
+                    intent.putExtra(DetailsActivity.MOVIE_ID, movieId);
+                    intent.putExtra(DetailsActivity.MOVIE_TRAILER_JSON, json);
+                    intent.putExtra(DetailsActivity.MOVIE_RATING, rating);
+                    //Start details activity
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                }
             }
         });
 

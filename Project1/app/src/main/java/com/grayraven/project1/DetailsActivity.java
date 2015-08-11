@@ -93,9 +93,6 @@ public class DetailsActivity extends ActionBarActivity implements SwipeInterface
     }
 
 
-    /*
-     * return date string based on screen orientation
-     */
     private String getFormatedDate(String date) {
         String result;
         if( getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {

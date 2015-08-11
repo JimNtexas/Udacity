@@ -17,7 +17,7 @@ public class MovieUtils {
      * Given a date string in the format yyyy/mm/dd, convert it
      * to the more common U.S. long format of MMMM dd, yyyy
      */
-    public static String formatLongDate(String date) {
+    static public String formatLongDate(String date) {
         try {
             SimpleDateFormat curFormater = new SimpleDateFormat("yyyy-mm-dd", Locale.US);
             Date dateObj = curFormater.parse(date);
@@ -31,10 +31,27 @@ public class MovieUtils {
     }
 
     /*
+     * Given a date string in the format yyyy/mm/dd, covert it
+     * to the more common U.S. medium form of MMM dd, yyyy
+     */
+     static public String formatMediumDate(String date) {
+         try {
+             SimpleDateFormat curFormater = new SimpleDateFormat("yyyy-mm-dd", Locale.US);
+             Date dateObj = curFormater.parse(date);
+             SimpleDateFormat newFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
+             return newFormat.format(dateObj);
+
+         } catch (ParseException e) {
+             Log.d(TAG, "formatDate unable to parse date from Movie DB, returning string unchanged");
+             return date;
+         }
+     }
+
+    /*
      * Given a date string in the format yyyy/mm/dd, convert it
      * to the more common U.S. short format of MMMM yyyy
      */
-    public static String formatShortDate(String date) {
+    static public String formatShortDate(String date) {
         try {
             SimpleDateFormat curFormater = new SimpleDateFormat("yyyy-mm-dd", Locale.US);
             Date dateObj = curFormater.parse(date);
@@ -62,4 +79,6 @@ public class MovieUtils {
 
         return new Point(imageViewWidth, imageViewHeight);
     }
+
+
 }
