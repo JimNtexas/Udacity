@@ -69,6 +69,10 @@ class GridViewAdapter extends ArrayAdapter<ExtendedMovie> {
         String path = MovieService.getPosterUrl(MovieService.POSTER_SIZE_STANDARD,movie.getPosterPath());
         Picasso.with(mContext).load(path).into(holder.imageView);
 
+        path = MovieService.getPosterUrl(MovieService.POSTER_SIZE_SMALL,movie.getPosterPath());
+        Picasso.with(mContext).load(path).fetch();  // cache the small posters here to avoid flicker when viewing movie details
+
+
         return row;
     }
 

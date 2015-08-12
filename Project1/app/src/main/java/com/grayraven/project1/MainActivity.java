@@ -10,6 +10,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -18,6 +20,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.common.reflect.TypeToken;
@@ -86,14 +90,16 @@ public class MainActivity extends ActionBarActivity {
                     args.putString(DetailsActivity.MOVIE_TITLE, title);
                     args.putString(DetailsActivity.MOVIE_TRAILER_JSON, json);
                     url = MovieService.getPosterUrl(MovieService.POSTER_SIZE_SMALL,item.getPosterPath());
-                    args.putString(DetailsActivity.MOVIE_URL,url);
-                    args.putString(DetailsActivity.MOVIE_PLOT,plot);
+                    args.putString(DetailsActivity.MOVIE_URL, url);
+                    args.putString(DetailsActivity.MOVIE_PLOT, plot);
                     args.putString(DetailsActivity.MOVIE_RELEASE_DATE, releaseDate);
                     args.putInt(DetailsActivity.MOVIE_ID, movieId);
                     args.putString(DetailsActivity.MOVIE_RATING, rating);
                     DetailsFragment fragment = new DetailsFragment();
                     fragment.setArguments(args);
-                    getSupportFragmentManager().beginTransaction()
+                    FragmentManager fm =  getSupportFragmentManager();
+                    FragmentTransaction ft = fm.beginTransaction();
+                    fm.beginTransaction()
                             .replace(R.id.tablet_detail, fragment, DetailsFragment.TAG).commit();
 
                 } else {
@@ -200,20 +206,17 @@ public class MainActivity extends ActionBarActivity {
             int result =  intent.getExtras().getInt(MovieService.RESULT_STATUS);
             String json = intent.getStringExtra(MovieService.MOVIE_LIST_JSON);
             if(result == MovieService.STATUS_FINISHED) {
+
+                if(mTablet) {
+                    if( findViewById(R.id.empty_text_view) != null) {
+                        TextView text =  (TextView)findViewById(R.id.empty_text_view);
+                        text.setVisibility(View.VISIBLE);
+                        ImageView picture = (ImageView)findViewById(R.id.empty_imageView);
+                        picture.setVisibility(View.VISIBLE);
+                    }
+                }
                 //noinspection unchecked
                 mMovies = new Gson().fromJson(json, new TypeToken<List<ExtendedMovie>>(){}.getType());
-               /* for(ExtendedMovie db : mMovies) {
-                     Log.i(TAG, "Title: " + db.getOriginalTitle());
-                    Log.i(TAG, "Number of trailers: "  + db.getTrailers().size());
-                    Log.i(TAG, "popularity: " + db.getPopularity());
-                    Log.i(TAG, "thumb: " + db.getPosterPath());
-                    Log.i(TAG, "plot : " + db.getOverview() );
-                    Log.i(TAG, "rating : " + db.getVoteAverage());
-                    Log.i(TAG, "popularity: " + db.getPopularity());
-                    Log.i(TAG, "release date: " + db.getReleaseDate());
-                } */
-
-
 
                 gridAdapter.setGridData(mMovies);
             } else if(result == MovieService.STATUS_API_ERROR) {

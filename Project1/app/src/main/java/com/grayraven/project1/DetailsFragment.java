@@ -6,19 +6,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
+
+import info.movito.themoviedbapi.model.Video;
 
 public class DetailsFragment extends android.support.v4.app.Fragment {
     public static String TAG = "MovieDetailsFragment";
-  /*  private TextView mTitleView;
-    private ImageView mPosterView;
-    private TextView mRatingView;
-    private TextView mReleaseView;
-    private TextView mPlotView;
-*/
+    private String mJson;
 
     public static DetailsFragment newInstance() {
         DetailsFragment fragment = new DetailsFragment();
@@ -66,6 +68,20 @@ public class DetailsFragment extends android.support.v4.app.Fragment {
             TextView   plotTextView = (TextView) rootView.findViewById(R.id.plot);
             plotTextView.setText(Html.fromHtml(plot));
 
+            mJson = (String) args.get(DetailsActivity.MOVIE_TRAILER_JSON);
+            List<Video> trailers  = new Gson().fromJson(mJson, new TypeToken<List<Video>>() {
+            }.getType());
+
+            Button btnTrailers = (Button) rootView.findViewById(R.id.button_trailers);
+            btnTrailers.setVisibility((trailers != null && trailers.size() > 0) ? View.VISIBLE : View.INVISIBLE);
+            btnTrailers.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showTrailerDialog(mJson);
+                }
+            });
+
+
 
         } else {
             rootView = inflater.inflate(R.layout.empty_detail_view, container, false);
@@ -73,6 +89,15 @@ public class DetailsFragment extends android.support.v4.app.Fragment {
 
 
         return rootView;
+    }
+
+    private void showTrailerDialog(String json) {
+        TrailerDialogFragment df = new TrailerDialogFragment().newInstance(json);
+        android.support.v4.app.Fragment fr = getActivity().getSupportFragmentManager().findFragmentByTag(TrailerDialogFragment.TAG);
+        if (fr == null) {
+            df.show(getActivity().getSupportFragmentManager(), TrailerDialogFragment.TAG);
+        }
+
     }
 
 

@@ -1,13 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal">
 
     <TextView
+        android:id="@+id/empty_text_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="this view is empty"
-        android:id="@+id/empty_details"
-        android:layout_gravity="center_horizontal" />
+        android:text="@string/empty_poster_text"
+        style="@style/DetailText"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/empty_imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:src="@drawable/coming_attractions"
+        android:scaleType="fitCenter"
+        android:layout_gravity="center_horizontal"
+        android:paddingBottom="200dp"
+        android:visibility="invisible" />
 </LinearLayout>
