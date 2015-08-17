@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,6 +22,14 @@ import info.movito.themoviedbapi.model.Video;
 public class DetailsFragment extends android.support.v4.app.Fragment {
     public static String TAG = "MovieDetailsFragment";
     private String mJson;
+    private String mTitle;
+    private String mUrl;
+    private String mRating;
+    private String mReleaseDate;
+    private String mPlot;
+    private String mMovieId;
+
+    LocalMovie mMovie = null;
 
     public static DetailsFragment newInstance() {
         DetailsFragment fragment = new DetailsFragment();
@@ -44,33 +53,63 @@ public class DetailsFragment extends android.support.v4.app.Fragment {
         // Inflate the layout for this fragment
         Log.i(TAG, "Inflating detail fragment");
         View rootView;
-        Bundle args = getArguments();
+        final Bundle args = getArguments();
         if(args != null) {
             rootView = inflater.inflate(R.layout.activity_details_view, container, false);
             TextView titleView  = (TextView) rootView.findViewById(R.id.title);
-            titleView.setText((String) args.get(DetailsActivity.MOVIE_TITLE));
+            mTitle = (String) args.get(DetailsActivity.MOVIE_TITLE);
+            titleView.setText((String) mTitle);
 
-            String imageUrl = (String) args.get(DetailsActivity.MOVIE_URL);
+            mUrl = (String) args.get(DetailsActivity.MOVIE_URL);
+
             ImageView posterView = (ImageView) rootView.findViewById(R.id.poster);
-            Picasso.with(getActivity()).load(imageUrl)
+            Picasso.with(getActivity()).load(mUrl)
                     .placeholder(R.drawable.whiteposter)
                     .into(posterView);
 
-            String rating = (String) args.get(DetailsActivity.MOVIE_RATING) + " / 10.0";
+            mRating = (String) args.get(DetailsActivity.MOVIE_RATING) + " / 10.0";
             TextView ratingTextView = (TextView) rootView.findViewById(R.id.rating);
-            ratingTextView.setText(Html.fromHtml(rating));
+            ratingTextView.setText(Html.fromHtml(mRating));
 
-            String release = (String) args.get(DetailsActivity.MOVIE_RELEASE_DATE);
+            mReleaseDate = (String) args.get(DetailsActivity.MOVIE_RELEASE_DATE);
             TextView releaseDateView = (TextView) rootView.findViewById(R.id.release_date);
-            releaseDateView.setText(Html.fromHtml(MovieUtils.formatMediumDate(release)));
+            releaseDateView.setText(Html.fromHtml(MovieUtils.formatMediumDate(mReleaseDate)));
 
-            String plot = (String) args.get(DetailsActivity.MOVIE_PLOT);
+            mPlot = (String) args.get(DetailsActivity.MOVIE_PLOT);
+            if(mPlot == null) {
+                mPlot = (String) getResources().getString(R.string.no_plot);
+            }
             TextView   plotTextView = (TextView) rootView.findViewById(R.id.plot);
-            plotTextView.setText(Html.fromHtml(plot));
+            plotTextView.setText(Html.fromHtml(mPlot));
 
             mJson = (String) args.get(DetailsActivity.MOVIE_TRAILER_JSON);
+
+            mMovieId = Integer.toString( args.getInt(DetailsActivity.MOVIE_ID) );
             List<Video> trailers  = new Gson().fromJson(mJson, new TypeToken<List<Video>>() {
             }.getType());
+
+            final CheckBox ckFavorite = (CheckBox) rootView.findViewById(R.id.check_favorite);
+
+            ckFavorite.setChecked(OrmHandler.isFavorite(mMovieId));;
+
+            //(String title, String rating, String releaseDate, String plot, String movieid, String trailerJson, String posterPath)
+            //mMovie = new LocalMovie(mTitle,mRating,mReleaseDate,mPlot, mMovieId, mJson, mUrl);
+            mMovie = new LocalMovie();
+            mMovie.setBundle(args);
+            ckFavorite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(ckFavorite.isChecked()){
+                        OrmHandler.insertMovie(mMovie);
+                        Log.i(TAG, mMovie.getTitle() + " marked as favorite");
+                        LocalImageStore.savePosterToFile(mMovieId, mUrl, getActivity());
+                    } else {
+                        Log.i(TAG, args.get(DetailsActivity.MOVIE_TITLE) + " deleted from favorites");
+                        OrmHandler.deleteMovie(mMovie);
+                        LocalImageStore.deleteImageFiles(mMovieId, getActivity());
+                    }
+                }
+            });
 
             Button btnTrailers = (Button) rootView.findViewById(R.id.button_trailers);
             btnTrailers.setVisibility((trailers != null && trailers.size() > 0) ? View.VISIBLE : View.INVISIBLE);

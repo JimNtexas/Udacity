@@ -1,5 +1,8 @@
 package com.grayraven.project1;
 
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.util.Log;
 import android.widget.ImageView;
@@ -78,6 +81,21 @@ public class MovieUtils {
         else imageViewHeight= imageHeight*imageViewWidth/imageWidth;//rescaled height of image within ImageView
 
         return new Point(imageViewWidth, imageViewHeight);
+    }
+
+    private static String getMetaDataString(Context context, String name) {
+        String value = null;
+
+        PackageManager pm = context.getPackageManager();
+        try {
+            ApplicationInfo ai = pm.getApplicationInfo(context.getPackageName(),
+                    PackageManager.GET_META_DATA);
+            value = ai.metaData.getString(name);
+        } catch (Exception e) {
+            Log.d(TAG, "Couldn't find config value: " + name);
+        }
+
+        return value;
     }
 
 

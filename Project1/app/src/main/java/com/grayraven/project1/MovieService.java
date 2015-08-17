@@ -9,6 +9,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import info.movito.themoviedbapi.TmdbApi;
@@ -41,6 +42,7 @@ public class MovieService  extends IntentService{
     public MovieService() {
         super(MovieService.class.getName());
     }
+    List<ExtendedMovie> mymovies = null;
 
     @Override
     protected void onHandleIntent(Intent intent)  {
@@ -50,6 +52,9 @@ public class MovieService  extends IntentService{
         if(sortBy == null) {
             sortBy = SORT_BY_POPULARITY;
         }
+
+        Log.i(TAG, "Sorting by: " + sortBy);
+
         TmdbApi tmdb = null;
         try {
             tmdb = TmdbSingleton.getTmdbInstance();
@@ -66,16 +71,30 @@ public class MovieService  extends IntentService{
         discover.sortBy(sortBy); // vote_average.desc
         discover.voteCountGte(MIN_VOTE_CNT);
         List<MovieDb> movies = tmdb.getDiscover().getDiscover(discover).getResults();
-        List<ExtendedMovie> mymovies  = new ArrayList<ExtendedMovie>();
+        mymovies  = new ArrayList<ExtendedMovie>();
 
         for(MovieDb db : movies) {
             mymovies.add(new ExtendedMovie(db));
         }
 
+        Log.i(TAG, "BEFORE SORT [title - popularity - rating:");
+        for(ExtendedMovie m : mymovies) {
+           Log.i(TAG, m.getTitle() + " - " + m.getmDb().getPopularity() + " - " + m.getmDb().getVoteAverage() + (m.isFavorite() ? "*" : ""));
+        }
+
+
+        Collections.sort(mymovies);
+
+
+        Log.i(TAG, "AFTER SORT [title - popularity - rating:");
+        for(ExtendedMovie m : mymovies) {
+            Log.i(TAG, m.getTitle() + " - " + m.getmDb().getPopularity() + " - " + m.getmDb().getVoteAverage() + (m.isFavorite() ? "*" : ""));
+        }
+
         Intent response = new Intent(MOVIE_SERVICE_INTENT);
         String json = new Gson().toJson(mymovies);
         response.putExtra(RESULT_STATUS, STATUS_FINISHED);
-        response.putExtra(MOVIE_LIST_JSON, json);
+        response.putExtra(MOVIE_LIST_JSON, json);  //TODO: Base64 encode to reduce chance of SQL injection?
         LocalBroadcastManager.getInstance(this).sendBroadcast(response);
         Log.i(TAG, "Movie request complete");
         this.stopSelf();

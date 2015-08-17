@@ -7,7 +7,5 @@
     <string name="rating_sort">Sort by Highest Rated</string>
     <string name="poster_content_desc">Image of this movie\&apos;s poster</string>
     <string name="empty_poster_text">Click on a poster for movie details</string>
-
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_plot">No description available</string>
 </resources>

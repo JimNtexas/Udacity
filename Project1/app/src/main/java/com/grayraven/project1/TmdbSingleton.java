@@ -6,7 +6,7 @@ import info.movito.themoviedbapi.TmdbApi;
 import info.movito.themoviedbapi.model.core.ResponseStatusException;
 
 /**
- * Create only Movie Database object for this app
+ * Create only one Movie Database object for this app
  */
 public class TmdbSingleton {
     private static TmdbApi tmdbInstance = null;
@@ -19,7 +19,6 @@ public class TmdbSingleton {
         if(tmdbInstance == null) {
             try {
                 tmdbInstance = new TmdbApi(ApiKey.API_KEY);
-                //       TmdbConfiguration results = tmdbInstance.getConfiguration(); /TODO: save locally, update only every few days, per MovieDB request
                 Log.i(TAG, "Tmdb singleton created");
             } catch(ResponseStatusException e) {
                 Log.i(TAG, "Exception: " + e.getMessage());

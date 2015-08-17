@@ -84,6 +84,8 @@ public class MainActivity extends ActionBarActivity {
                 String releaseDate = item.getReleaseDate();
                 int movieId = item.getId();
                 String rating = Float.toString(item.getVoteAverage());
+                String path = item.getPosterPath(); //todo: debug only
+                Log.i(TAG, "raw poster path: " + item.getPosterPath());
 
                 if(mTablet) {
                     Bundle args = new Bundle();
