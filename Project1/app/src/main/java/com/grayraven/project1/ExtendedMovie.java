@@ -52,6 +52,10 @@ public class ExtendedMovie extends MovieDb implements Comparable<ExtendedMovie> 
         return mDb;
     }
 
+    public int getMovieId() {
+        return mDb.getId();
+    }
+
     public boolean isFavorite() { return mIsFavorite; }
     public void setFavorite(boolean isFavorite) {
         mIsFavorite = isFavorite;

@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 import info.movito.themoviedbapi.TmdbApi;
+import info.movito.themoviedbapi.TmdbMovies;
 import info.movito.themoviedbapi.model.Discover;
 import info.movito.themoviedbapi.model.MovieDb;
 import info.movito.themoviedbapi.model.core.ResponseStatusException;
@@ -35,18 +36,21 @@ public class MovieService  extends IntentService{
     public static final String SORT_BY_USER_RATING = "vote_average.desc";
     public static final String POSTER_SIZE_STANDARD = "w185";
     public static final String POSTER_SIZE_SMALL = "w154";
+    public static final String INCLUDE_FAVORITES = "include_all_favorites";
     private static final int MIN_VOTE_CNT = 1000;
-
     private static final String TAG = "MovieService";
+
+    TmdbApi tmdb = null;
+    List<ExtendedMovie> mymovies = null;
 
     public MovieService() {
         super(MovieService.class.getName());
     }
-    List<ExtendedMovie> mymovies = null;
 
     @Override
     protected void onHandleIntent(Intent intent)  {
         Log.i(TAG, "Movie Service Start");
+        mymovies = null;
 
         String sortBy = intent.getStringExtra(SORT_PREFERENCE);
         if(sortBy == null) {
@@ -55,7 +59,6 @@ public class MovieService  extends IntentService{
 
         Log.i(TAG, "Sorting by: " + sortBy);
 
-        TmdbApi tmdb = null;
         try {
             tmdb = TmdbSingleton.getTmdbInstance();
         } catch (ResponseStatusException e) {
@@ -68,7 +71,7 @@ public class MovieService  extends IntentService{
         }
         Discover discover = new Discover();
         discover.page(1);
-        discover.sortBy(sortBy); // vote_average.desc
+        discover.sortBy(sortBy);
         discover.voteCountGte(MIN_VOTE_CNT);
         List<MovieDb> movies = tmdb.getDiscover().getDiscover(discover).getResults();
         mymovies  = new ArrayList<ExtendedMovie>();
@@ -82,6 +85,10 @@ public class MovieService  extends IntentService{
            Log.i(TAG, m.getTitle() + " - " + m.getmDb().getPopularity() + " - " + m.getmDb().getVoteAverage() + (m.isFavorite() ? "*" : ""));
         }
 
+        boolean include_favorites = intent.getBooleanExtra(INCLUDE_FAVORITES, false);
+        if(include_favorites) {
+            AddFavoriteIfNotPresent();
+        }
 
         Collections.sort(mymovies);
 
@@ -105,5 +112,34 @@ public class MovieService  extends IntentService{
         String url = String.format(posterFormat, posterPath, size);
         return url;
     }
+
+    void AddFavoriteIfNotPresent() {
+        ArrayList<Integer> favIds = (ArrayList<Integer>) OrmHandler.getFavoriteIds();
+        ArrayList<Integer> idsToAdd = new ArrayList<Integer>();
+        for(ExtendedMovie m : mymovies) {
+            if(favIds.contains(m.getMovieId())) {
+               favIds.remove(favIds.indexOf(m.getMovieId()));
+                Log.d(TAG, m.getTitle() + " is already a favorite");
+            }
+        }
+        if(favIds.size() > 0) {
+            for(int id : favIds) {
+                addFavorite(id);
+            }
+        }
+    }
+
+    private void addFavorite(int id){
+        TmdbMovies movies = tmdb.getMovies();
+        MovieDb movie = movies.getMovie(id,"en");
+        if(movie != null) {
+            Log.d(TAG, "Adding favorite " + movie.getOriginalTitle());
+            mymovies.add(new ExtendedMovie(movie));
+        }
+    }
+
+
 }
+
+
 

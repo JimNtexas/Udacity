@@ -5,6 +5,7 @@ import android.util.Log;
 import com.orm.query.Condition;
 import com.orm.query.Select;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,7 +44,7 @@ public class OrmHandler {
 
         Log.i(TAG, "query size: " + dupQuery.count());
         if(dupQuery.count() > 0) {
-            Log.i(TAG, m.getTitle() + " already exists in db, deleteing old record");
+            Log.i(TAG, m.getTitle() + " already exists in db, deleting old record");
             List<LocalMovie> dups = dupQuery.list();
             dups.get(0).delete();
         }
@@ -75,6 +76,14 @@ public class OrmHandler {
         }
     }
 
+    static List<Integer> getFavoriteIds() {
+        ArrayList<Integer> favorites = new ArrayList<Integer>();
+        List<LocalMovie> movies = LocalMovie.listAll(LocalMovie.class);
+        for(LocalMovie movie : movies){
+            favorites.add(Integer.parseInt(movie.getMovieId()));
+        }
+        return favorites;
+    }
 
 
 }

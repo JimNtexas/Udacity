@@ -6,22 +6,38 @@
     android:orientation="vertical"
     android:padding="5dp">
 
+    <RelativeLayout
+        android:id="@+id/poster_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
     <ImageView
-        android:contentDescription="@string/poster_content_desc"
         android:id="@+id/grid_item_image"
+        android:contentDescription="@string/poster_content_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        android:src="@drawable/poster"/>
+
+     <ImageView
+         android:id="@+id/favorite_star"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:src="@drawable/small_star"
+         android:layout_alignParentLeft="false"
+         android:layout_margin="0dp" />
+    </RelativeLayout>
+
 
     <TextView
         android:id="@+id/grid_item_title"
+        android:contentDescription="@string/title_desc"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:gravity="center"
         android:maxLines="2"
         android:ellipsize="marquee"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        android:visibility="gone" />
 
 </LinearLayout>
 

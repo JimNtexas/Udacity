@@ -6,6 +6,8 @@
     <string name="popularity_sort">Sort by Popularity</string>
     <string name="rating_sort">Sort by Highest Rated</string>
     <string name="poster_content_desc">Image of this movie\&apos;s poster</string>
+    <string name="title_desc">Title of this movie</string>
     <string name="empty_poster_text">Click on a poster for movie details</string>
     <string name="no_plot">No description available</string>
+    <string name="include_favorites">Include All Favorites</string>
 </resources>

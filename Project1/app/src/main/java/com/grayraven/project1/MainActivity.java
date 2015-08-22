@@ -46,8 +46,10 @@ public class MainActivity extends ActionBarActivity {
     private String mSortPreference;
     private ProgressDialog mLoadProgress;
     private final String ACTIVITY_SORT_PREFERENCE = "activity_sort_pref";
+    public final String INCLUDE_FAVS_PREFERENCE = "include_favorites";
     SharedPreferences mPrefs;
     private boolean mTablet = false;
+    private boolean mIncludeFavorites = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,7 @@ public class MainActivity extends ActionBarActivity {
 
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         mSortPreference = mPrefs.getString(ACTIVITY_SORT_PREFERENCE, MovieService.SORT_BY_POPULARITY);
+        mIncludeFavorites = mPrefs.getBoolean(INCLUDE_FAVS_PREFERENCE, false);
 
         setContentView(R.layout.activity_main);
         mContext = getApplicationContext();
@@ -130,6 +133,7 @@ public class MainActivity extends ActionBarActivity {
         if(isNetworkConnected()) {
             Intent service = new Intent(getApplicationContext(), MovieService.class);
             service.putExtra(MovieService.SORT_PREFERENCE, mSortPreference);
+            service.putExtra(MovieService.INCLUDE_FAVORITES, mIncludeFavorites);
             service.setPackage("com.grayraven.project1");
             Log.i(TAG, "starting service");
             ShowLoadingProgress();
@@ -146,16 +150,14 @@ public class MainActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-      //  mOptions.findItem(R.id.menuPopularity).setChecked(false);
-       // mOptions.findItem(R.id.menuRated).setChecked(false);
         mSortPreference = mPrefs.getString(ACTIVITY_SORT_PREFERENCE, MovieService.SORT_BY_POPULARITY);
         if(mSortPreference.equals(MovieService.SORT_BY_POPULARITY)) {
             menu.findItem(R.id.menuPopularity).setChecked(true);
-            menu.findItem(R.id.menuRated).setChecked(false);
         } else {
             menu.findItem(R.id.menuRated).setChecked(true);
-            menu.findItem(R.id.menuPopularity).setChecked(false);
         }
+        mIncludeFavorites = mPrefs.getBoolean(INCLUDE_FAVS_PREFERENCE, false);
+        menu.findItem(R.id.includeFavorites).setChecked(mIncludeFavorites);
         mOptions = menu;
         return true;
     }
@@ -193,6 +195,13 @@ public class MainActivity extends ActionBarActivity {
         }
         mPrefs.edit().putString(ACTIVITY_SORT_PREFERENCE, mSortPreference).commit();
         return id == R.id.action_settings || super.onOptionsItemSelected(item);
+    }
+
+    public void onClickFavorite(MenuItem item) {
+        mIncludeFavorites = !item.isChecked();
+        item.setChecked(mIncludeFavorites);
+        mPrefs.edit().putBoolean(INCLUDE_FAVS_PREFERENCE,mIncludeFavorites).commit();
+        StartMovieService();
     }
 
     private final BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {

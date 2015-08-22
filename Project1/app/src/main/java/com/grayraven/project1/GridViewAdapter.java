@@ -57,7 +57,8 @@ class GridViewAdapter extends ArrayAdapter<ExtendedMovie> {
             row = inflater.inflate(layoutResourceId, parent, false);
             holder = new ViewHolder();
             holder.titleTextView = (TextView) row.findViewById(R.id.grid_item_title);
-            holder.imageView = (ImageView) row.findViewById(R.id.grid_item_image);
+            holder.posterView = (ImageView) row.findViewById(R.id.grid_item_image);
+            holder.favoriteStar = (ImageView) row.findViewById(R.id.favorite_star);
             row.setTag(holder);
         } else {
             holder = (ViewHolder) row.getTag();
@@ -66,8 +67,10 @@ class GridViewAdapter extends ArrayAdapter<ExtendedMovie> {
         MovieDb movie =  mMovieData.get(position).getMovie();
         holder.titleTextView.setText(Html.fromHtml(movie.getOriginalTitle()));
 
+        holder.favoriteStar.setVisibility(mMovieData.get(position).isFavorite() ? View.VISIBLE : View.INVISIBLE  );
+
         String path = MovieService.getPosterUrl(MovieService.POSTER_SIZE_STANDARD,movie.getPosterPath());
-        Picasso.with(mContext).load(path).into(holder.imageView);
+        Picasso.with(mContext).load(path).into(holder.posterView);
 
         path = MovieService.getPosterUrl(MovieService.POSTER_SIZE_SMALL,movie.getPosterPath());
         Picasso.with(mContext).load(path).fetch();  // cache the small posters here to avoid flicker when viewing movie details
@@ -86,6 +89,7 @@ class GridViewAdapter extends ArrayAdapter<ExtendedMovie> {
 
     static class ViewHolder {
         TextView titleTextView;
-        ImageView imageView;
+        ImageView posterView;
+        ImageView favoriteStar;
     }
 }

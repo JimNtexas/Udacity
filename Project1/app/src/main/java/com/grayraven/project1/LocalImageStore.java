@@ -40,7 +40,7 @@ public class LocalImageStore {
                     @Override
                     public void run() {
 
-                        File appDir = context.getExternalFilesDir(localDir);
+                        File appDir = context.getExternalFilesDir(localDir);  //TODO: save as private file
                         File file = new File(appDir, filename);
                         Log.i(TAG, "app dir:" + appDir.getAbsolutePath());
                         try {
@@ -75,7 +75,7 @@ public class LocalImageStore {
     // see http://developer.android.com/reference/android/content/Context.html#getExternalFilesDir(java.lang.String)
         static public boolean deleteImageFiles(String movieId, Context context) {
             boolean result = false;
-            File appDir = context.getExternalFilesDir(localDir);
+            File appDir = context.getExternalFilesDir(localDir);  //todo - save private
             File small = new File(appDir, movieId + ".small.jpg");
             File large = new File(appDir, movieId + ".large.jpg");
             Log.i(TAG, "deleteing from " + appDir.getAbsolutePath());
