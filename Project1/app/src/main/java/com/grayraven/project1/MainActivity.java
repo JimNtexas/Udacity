@@ -130,6 +130,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void StartMovieService() {
+
         if(isNetworkConnected()) {
             Intent service = new Intent(getApplicationContext(), MovieService.class);
             service.putExtra(MovieService.SORT_PREFERENCE, mSortPreference);
@@ -159,6 +160,7 @@ public class MainActivity extends ActionBarActivity {
         mIncludeFavorites = mPrefs.getBoolean(INCLUDE_FAVS_PREFERENCE, false);
         menu.findItem(R.id.includeFavorites).setChecked(mIncludeFavorites);
         mOptions = menu;
+        SetMenuTitle();
         return true;
     }
 
@@ -170,26 +172,22 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        //Note: according to http://developer.android.com/guide/topics/ui/menus.html you can't have a checkable group in the options menu,
+        //so we manage the menu state ourselves
         int id = item.getItemId();
         switch(id) {
-            case R.id.action_settings:
-                Log.i(TAG,"action settings");
-                break;
             case R.id.menuPopularity:
-                Log.i(TAG, "popularity");
+                Log.i(TAG, "sorting by popularity");
                 mSortPreference = MovieService.SORT_BY_POPULARITY;
                 item.setChecked(true);
                 mOptions.findItem(R.id.menuRated).setChecked(false);
                 StartMovieService();
                 break;
             case R.id.menuRated:
-                Log.i(TAG, "rated");
+                Log.i(TAG, "sorting by rated");
                 mSortPreference = MovieService.SORT_BY_USER_RATING;
-                mOptions.findItem(R.id.menuPopularity).setChecked(false);
                 item.setChecked(true);
+                mOptions.findItem(R.id.menuPopularity).setChecked(false);
                 StartMovieService();
                 break;
         }
@@ -228,7 +226,7 @@ public class MainActivity extends ActionBarActivity {
                 }
                 //noinspection unchecked
                 mMovies = new Gson().fromJson(json, new TypeToken<List<ExtendedMovie>>(){}.getType());
-
+                SetMenuTitle();
                 gridAdapter.setGridData(mMovies);
             } else if(result == MovieService.STATUS_API_ERROR) {
                 String msg = intent.getStringExtra(MovieService.SERVICE_ERROR);
@@ -251,6 +249,14 @@ public class MainActivity extends ActionBarActivity {
         mLoadProgress.setTitle(getString(R.string.loading_movies));
         mLoadProgress.setMessage(getString((R.string.loading_msg)));
         mLoadProgress.show();
+    }
+
+    private void SetMenuTitle() {
+        String title = (mSortPreference == MovieService.SORT_BY_POPULARITY ? getString(R.string.most_popular) : getString(R.string.highest_rated));
+        if(mOptions != null) {
+            mOptions.findItem(R.id.action_settings).setTitle(title);
+        }
+        Log.d(TAG, "TITLE: " + title);
     }
 }
 

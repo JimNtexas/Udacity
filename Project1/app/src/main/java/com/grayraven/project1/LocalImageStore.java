@@ -26,9 +26,10 @@ public class LocalImageStore {
 
     static public void savePosterToFile(String movieId, String posterPath, Context context) {
 
-        processPosterPath(movieId, posterPath);
+        Log.d(TAG, "saving to local file not yet implemented"); //TODO: activate when off-line mode is added
+      /*  processPosterPath(movieId, posterPath);
         saveImage(context, smallUrl, smallFilename);
-        saveImage(context, largeUrl, largeFilename);
+        saveImage(context, largeUrl, largeFilename);*/
     }
 
     static private void saveImage(final Context context, String url,  final String filename) {

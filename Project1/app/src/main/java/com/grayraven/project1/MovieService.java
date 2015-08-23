@@ -57,7 +57,7 @@ public class MovieService  extends IntentService{
             sortBy = SORT_BY_POPULARITY;
         }
 
-        Log.i(TAG, "Sorting by: " + sortBy);
+        Log.i(TAG, "Sorting by: " + (SORT_BY_POPULARITY == sortBy ? "POPULARITY" : "RATING (vote avg"));
 
         try {
             tmdb = TmdbSingleton.getTmdbInstance();
@@ -88,15 +88,14 @@ public class MovieService  extends IntentService{
         boolean include_favorites = intent.getBooleanExtra(INCLUDE_FAVORITES, false);
         if(include_favorites) {
             AddFavoriteIfNotPresent();
+            Collections.sort(mymovies);
+            Log.i(TAG, "AFTER Favorites sort [title - popularity - rating:");
+            for(ExtendedMovie m : mymovies) {
+                Log.i(TAG, m.getTitle() + " - " + m.getmDb().getPopularity() + " - " + m.getmDb().getVoteAverage() + (m.isFavorite() ? "*" : ""));
+            }
         }
 
-        Collections.sort(mymovies);
 
-
-        Log.i(TAG, "AFTER SORT [title - popularity - rating:");
-        for(ExtendedMovie m : mymovies) {
-            Log.i(TAG, m.getTitle() + " - " + m.getmDb().getPopularity() + " - " + m.getmDb().getVoteAverage() + (m.isFavorite() ? "*" : ""));
-        }
 
         Intent response = new Intent(MOVIE_SERVICE_INTENT);
         String json = new Gson().toJson(mymovies);

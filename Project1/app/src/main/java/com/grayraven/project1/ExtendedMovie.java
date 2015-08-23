@@ -83,11 +83,7 @@ public class ExtendedMovie extends MovieDb implements Comparable<ExtendedMovie> 
 
     public int compareTo(ExtendedMovie m) {
         int result = Boolean.compare( m.isFavorite(), mIsFavorite);
-      /*  if(result==0) {
-            return (this.getMovie().getOriginalTitle().compareTo(m.getMovie().getOriginalTitle())) == 1 ? 0:1 ;
-        }    else {
-            return result;
-        }*/
+   
         return result;
     }
 }

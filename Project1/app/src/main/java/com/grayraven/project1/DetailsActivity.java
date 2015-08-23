@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,8 +32,11 @@ public class DetailsActivity extends ActionBarActivity implements SwipeInterface
     public static final String MOVIE_TRAILER_JSON = "trailer_json";
 
     private static final String TAG = "MovieDetailsActivity";
+    private String mUrl;
     private String mVideoListJson;
     private Button btnTrailers = null;
+    private String mMovieId;
+    LocalMovie mMovie = null;
     TrailerDialogFragment mTrailerFragment = null;
 
     @Override
@@ -47,7 +52,7 @@ public class DetailsActivity extends ActionBarActivity implements SwipeInterface
         RelativeLayout swipe_layout = (RelativeLayout) findViewById(R.id.details_rl);
         swipe_layout.setOnTouchListener(swipe);
 
-        String title = getIntent().getStringExtra(MOVIE_TITLE);
+        final String title = getIntent().getStringExtra(MOVIE_TITLE);
         TextView  titleTextView = (TextView) findViewById(R.id.title);
         titleTextView.setText(Html.fromHtml(title));
 
@@ -78,6 +83,30 @@ public class DetailsActivity extends ActionBarActivity implements SwipeInterface
             @Override
             public void onClick(View view) {
                 showTrailerDialog(mVideoListJson);
+            }
+        });
+
+        int intId = getIntent().getIntExtra(MOVIE_ID, 0);
+        mMovieId = Integer.toString(intId);
+        final CheckBox ckFavorite = (CheckBox) findViewById(R.id.check_favorite);
+        ckFavorite.setChecked(OrmHandler.isFavorite(mMovieId));
+
+        //LocalMovie(String title, String rating, String releaseDate, String plot, String movieid, String trailerJson, String posterPath)
+
+        mMovie = new LocalMovie(title,rating,release,plot, mMovieId,mVideoListJson,getIntent().getStringExtra(MOVIE_URL));
+        ckFavorite.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                if(ckFavorite.isChecked()){
+                    OrmHandler.insertMovie(mMovie);
+                    Log.i(TAG, mMovie.getTitle() + " marked as favorite");
+                    LocalImageStore.savePosterToFile(mMovieId, mUrl,getApplicationContext());
+                } else {
+                    Log.i(TAG, title + " deleted from favorites");
+                    OrmHandler.deleteMovie(mMovie);
+                    LocalImageStore.deleteImageFiles(mMovieId, getApplicationContext());
+                }
             }
         });
     }
