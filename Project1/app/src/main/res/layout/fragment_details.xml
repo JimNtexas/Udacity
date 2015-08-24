@@ -1,21 +1,15 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="com.grayraven.project1.DetailsFragment"
     android:id="@+id/detail_view">
-
-    <!-- TODO: Update blank fragment layout -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
 
     <ImageView
         android:id="@+id/poster"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:scaleType="centerInside"
-        android:paddingLeft="5dp" />
-    </LinearLayout>
+        android:paddingLeft="5dp"
+        android:contentDescription="@string/poster_desc"
+        tools:ignore="RtlHardcoded,RtlSymmetry" />
 
-</FrameLayout>
+</LinearLayout>

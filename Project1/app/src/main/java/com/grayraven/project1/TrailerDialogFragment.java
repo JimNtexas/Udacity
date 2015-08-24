@@ -1,5 +1,6 @@
 package com.grayraven.project1;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,9 +26,8 @@ import info.movito.themoviedbapi.model.Video;
 public class TrailerDialogFragment extends DialogFragment implements AdapterView.OnItemClickListener {
 
     static final String TAG = "MovieTrailerDlg";
-    static String mJson;
-    ListView mTrailerList = null;
-    List<Video> mVideos = null;
+    private static String mJson;
+    private List<Video> mVideos = null;
 
     @Override
     public void onStart() {
@@ -47,8 +47,8 @@ public class TrailerDialogFragment extends DialogFragment implements AdapterView
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         setRetainInstance(true);
-        View v = inflater.inflate(R.layout.trailer_dialog_fragment, null, false);
-        mTrailerList = (ListView)v.findViewById(R.id.trailer_list);
+        @SuppressLint("InflateParams") View v = inflater.inflate(R.layout.trailer_dialog_fragment, null, false);
+        ListView mTrailerList = (ListView) v.findViewById(R.id.trailer_list);
         mVideos  = new Gson().fromJson(mJson, new TypeToken<List<Video>>() {
         }.getType());
 
@@ -57,10 +57,6 @@ public class TrailerDialogFragment extends DialogFragment implements AdapterView
         adapter.notifyDataSetChanged();
         mTrailerList.setOnItemClickListener(this);
         return v;
-    }
-
-    private void setDialogTitle(TextView v) {
-
     }
 
     public static TrailerDialogFragment newInstance(String json) {
@@ -90,11 +86,6 @@ public class TrailerDialogFragment extends DialogFragment implements AdapterView
         }
     }
 
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
 
     @Override //recommended as a framework bug workaround
     public void onDestroyView() {

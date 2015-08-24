@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class MovieUtils {
+class MovieUtils {
 
     private static final String TAG = "movie_utils";
 

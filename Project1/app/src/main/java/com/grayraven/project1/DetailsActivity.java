@@ -21,6 +21,7 @@ import java.util.List;
 
 import info.movito.themoviedbapi.model.Video;
 
+@SuppressWarnings("deprecation")
 public class DetailsActivity extends ActionBarActivity implements SwipeInterface{
 
     public static final String MOVIE_TITLE = "title";
@@ -34,9 +35,8 @@ public class DetailsActivity extends ActionBarActivity implements SwipeInterface
     private static final String TAG = "MovieDetailsActivity";
     private String mUrl;
     private String mVideoListJson;
-    private Button btnTrailers = null;
     private String mMovieId;
-    LocalMovie mMovie = null;
+    private LocalMovie mMovie = null;
     TrailerDialogFragment mTrailerFragment = null;
 
     @Override
@@ -77,7 +77,7 @@ public class DetailsActivity extends ActionBarActivity implements SwipeInterface
         List<Video> trailers  = new Gson().fromJson(mVideoListJson, new TypeToken<List<Video>>() {
         }.getType());
 
-        btnTrailers = (Button) findViewById(R.id.button_trailers);
+        Button btnTrailers = (Button) findViewById(R.id.button_trailers);
         btnTrailers.setVisibility((trailers != null && trailers.size() > 0) ? View.VISIBLE : View.INVISIBLE);
         btnTrailers.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,8 +92,8 @@ public class DetailsActivity extends ActionBarActivity implements SwipeInterface
         ckFavorite.setChecked(OrmHandler.isFavorite(mMovieId));
 
         //LocalMovie(String title, String rating, String releaseDate, String plot, String movieid, String trailerJson, String posterPath)
-
-        mMovie = new LocalMovie(title,rating,release,plot, mMovieId,mVideoListJson,getIntent().getStringExtra(MOVIE_URL));
+        String rate = getIntent().getStringExtra(MOVIE_RATING);
+        mMovie = new LocalMovie(title, rate , release,plot, mMovieId,mVideoListJson,getIntent().getStringExtra(MOVIE_URL));
         ckFavorite.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -113,7 +113,7 @@ public class DetailsActivity extends ActionBarActivity implements SwipeInterface
 
 
     private void showTrailerDialog(String json) {
-        TrailerDialogFragment df = new TrailerDialogFragment().newInstance(json);
+        @SuppressWarnings("AccessStaticViaInstance") TrailerDialogFragment df = new TrailerDialogFragment().newInstance(json);
         android.support.v4.app.Fragment fr = getSupportFragmentManager().findFragmentByTag(TrailerDialogFragment.TAG);
         if (fr == null) {
             df.show(getSupportFragmentManager(), TrailerDialogFragment.TAG);

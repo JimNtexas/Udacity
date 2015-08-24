@@ -11,7 +11,7 @@ import android.view.View;
 class ActivitySwipeDetector implements View.OnTouchListener {
 
     private static final String TAG = "MovieSwipeDetector";
-    private SwipeInterface activity;
+    private final SwipeInterface activity;
     private static final int MIN_DISTANCE = 100;
     private float downX;
     private float downY;

@@ -3,10 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
     <item android:id="@+id/action_settings" android:title=""
         android:orderInCategory="100" app:showAsAction="ifRoom" />
-    <group android:checkableBehavior="single">
-        <item android:title="@string/popularity_sort" android:id="@+id/menuPopularity"  />
-        <item android:title="@string/rating_sort" android:id="@+id/menuRated"  />
-    </group>
+    <item android:title="@string/popularity_sort" android:id="@+id/menuPopularity"  />
+    <item android:title="@string/rating_sort" android:id="@+id/menuRated"  />
     <item android:title="@string/include_favorites" android:id="@+id/includeFavorites" android:checkable="true" android:onClick="onClickFavorite"/>
 
 </menu>
+
+<!-- Note: according to http://developer.android.com/guide/topics/ui/menus.html you can't have a checkable group in the options menu -->

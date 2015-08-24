@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
@@ -16,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
-        android:src="@drawable/poster"/>
+        />
 
      <ImageView
          android:id="@+id/favorite_star"
@@ -24,7 +25,9 @@
          android:layout_height="wrap_content"
          android:src="@drawable/small_star"
          android:layout_alignParentLeft="false"
-         android:layout_margin="0dp" />
+         android:layout_margin="0dp"
+         android:contentDescription="@string/poster_desc"
+         tools:ignore="RtlHardcoded" />
     </RelativeLayout>
 
 

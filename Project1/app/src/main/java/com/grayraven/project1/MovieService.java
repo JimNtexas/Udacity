@@ -23,6 +23,7 @@ import info.movito.themoviedbapi.model.core.ResponseStatusException;
  * download the first page of movies according to the provided parameters
  * Created by jhoward on 7/25/2015.
  */
+@SuppressWarnings({"WeakerAccess", "Convert2Diamond"})
 public class MovieService  extends IntentService{
 
     public static final int STATUS_FINISHED = 1;
@@ -57,7 +58,7 @@ public class MovieService  extends IntentService{
             sortBy = SORT_BY_POPULARITY;
         }
 
-        Log.i(TAG, "Sorting by: " + (SORT_BY_POPULARITY == sortBy ? "POPULARITY" : "RATING (vote avg"));
+        Log.i(TAG, "Sorting by: " + (SORT_BY_POPULARITY.equals(sortBy) ? "POPULARITY" : "RATING (vote avg"));
 
         try {
             tmdb = TmdbSingleton.getTmdbInstance();
@@ -108,8 +109,7 @@ public class MovieService  extends IntentService{
 
     public static String getPosterUrl(String posterPath, String size ) {
         final String posterFormat = "http://image.tmdb.org/t/p/%s/%s"; //w154 or w185
-        String url = String.format(posterFormat, posterPath, size);
-        return url;
+        return String.format(posterFormat, posterPath, size);
     }
 
     void AddFavoriteIfNotPresent() {

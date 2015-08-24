@@ -1,7 +1,24 @@
-Udacity NanoDegree Project One - Stage One
+Udacity NanoDegree Project One - Stage Two
 
 Jim Howard
 jim@grayraven.com
+
+Stage Two changes:
+
+Implemented master-detail pattern for tablet devices.
+Users may include favourites in sorted displayed
+Users may see and view trailers for each movie using intents.
+Data on favourites persists using a local database using the SugarORM library.
+All network and database operations are done using background threads.
+
+Overall Lessons learned:
+
+Lint early and often!
+Read the Rubic carefully!  I missed the requirement for offline support until well into stage two, and didn't have time to refactor that into this version.
+Develop fragments, activities, and layouts for all supported sizes in parallel!  Don't do one and then another, go back and forth as you develop!
+This was a great learning experience for me.
+
+---------------------
 
 This is an implementation of the Udacity Android NanoDegree, Stage one.
 
@@ -16,7 +33,7 @@ When a poster is clicked a details view is displayed, showing the following info
 - Average rating
 - Plot synopsis
 
-This detail information is overlayed over an image of the movie's poster.
+This detail information is overlayed over an image of the movie poster.
 
 Implementation details:
 

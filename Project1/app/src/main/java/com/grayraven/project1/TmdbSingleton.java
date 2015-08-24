@@ -8,7 +8,7 @@ import info.movito.themoviedbapi.model.core.ResponseStatusException;
 /**
  * Create only one Movie Database object for this app
  */
-public class TmdbSingleton {
+class TmdbSingleton {
     private static TmdbApi tmdbInstance = null;
     private static final String TAG = "movie_tmdb_singleton";
 

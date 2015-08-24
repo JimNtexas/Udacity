@@ -1,5 +1,6 @@
 package com.grayraven.project1;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +13,7 @@ import java.util.List;
 
 import info.movito.themoviedbapi.model.Video;
 
-/**
- * Created by jhoward on 8/5/2015.
- */
-public class TrailerAdapter extends BaseAdapter {
+class TrailerAdapter extends BaseAdapter {
 
     private List<Video> mVideos;
 
@@ -49,6 +47,7 @@ public class TrailerAdapter extends BaseAdapter {
         return position;
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public View getView(int position, View view, ViewGroup parent) {
          final TextView nameView;

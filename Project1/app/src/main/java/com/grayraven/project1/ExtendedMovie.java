@@ -1,5 +1,6 @@
 package com.grayraven.project1;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -12,7 +13,8 @@ import info.movito.themoviedbapi.model.Video;
 /**
  * Extends MovieDb to include the list of movie trailers
  */
-public class ExtendedMovie extends MovieDb implements Comparable<ExtendedMovie> {
+@SuppressWarnings({"FieldCanBeLocal", "unused"})
+class ExtendedMovie extends MovieDb implements Comparable<ExtendedMovie> {
     private final String TAG = "MovieExtendedDb";
     private List<Video> mTrailers =new ArrayList<>();
     private MovieDb mDb;
@@ -38,6 +40,7 @@ public class ExtendedMovie extends MovieDb implements Comparable<ExtendedMovie> 
             for(Video vid: mTrailers)
             {
                 if(!vid.getSite().equalsIgnoreCase("YouTube")) {
+
                     Log.i(TAG, "unknown movie site: " + vid.getSite());
                 }
             }
@@ -81,9 +84,7 @@ public class ExtendedMovie extends MovieDb implements Comparable<ExtendedMovie> 
         return mTrailers;
     }
 
-    public int compareTo(ExtendedMovie m) {
-        int result = Boolean.compare( m.isFavorite(), mIsFavorite);
-   
-        return result;
+    public int compareTo(@NonNull ExtendedMovie m) {
+        return Boolean.compare( m.isFavorite(), mIsFavorite);
     }
 }

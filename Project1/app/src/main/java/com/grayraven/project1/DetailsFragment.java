@@ -19,17 +19,14 @@ import java.util.List;
 
 import info.movito.themoviedbapi.model.Video;
 
+@SuppressWarnings("unused")
 public class DetailsFragment extends android.support.v4.app.Fragment {
-    public static String TAG = "MovieDetailsFragment";
+    public static final String TAG = "MovieDetailsFragment";
     private String mJson;
-    private String mTitle;
     private String mUrl;
-    private String mRating;
-    private String mReleaseDate;
-    private String mPlot;
     private String mMovieId;
 
-    LocalMovie mMovie = null;
+    private LocalMovie mMovie = null;
 
     public static DetailsFragment newInstance() {
         DetailsFragment fragment = new DetailsFragment();
@@ -57,8 +54,8 @@ public class DetailsFragment extends android.support.v4.app.Fragment {
         if(args != null) {
             rootView = inflater.inflate(R.layout.activity_details_view, container, false);
             TextView titleView  = (TextView) rootView.findViewById(R.id.title);
-            mTitle = (String) args.get(DetailsActivity.MOVIE_TITLE);
-            titleView.setText((String) mTitle);
+            String mTitle = (String) args.get(DetailsActivity.MOVIE_TITLE);
+            titleView.setText(mTitle);
 
             mUrl = (String) args.get(DetailsActivity.MOVIE_URL);
 
@@ -67,17 +64,17 @@ public class DetailsFragment extends android.support.v4.app.Fragment {
                     .placeholder(R.drawable.whiteposter)
                     .into(posterView);
 
-            mRating = (String) args.get(DetailsActivity.MOVIE_RATING) + " / 10.0";
+            String mRating = args.get(DetailsActivity.MOVIE_RATING) + " / 10.0";
             TextView ratingTextView = (TextView) rootView.findViewById(R.id.rating);
             ratingTextView.setText(Html.fromHtml(mRating));
 
-            mReleaseDate = (String) args.get(DetailsActivity.MOVIE_RELEASE_DATE);
+            String mReleaseDate = (String) args.get(DetailsActivity.MOVIE_RELEASE_DATE);
             TextView releaseDateView = (TextView) rootView.findViewById(R.id.release_date);
             releaseDateView.setText(Html.fromHtml(MovieUtils.formatMediumDate(mReleaseDate)));
 
-            mPlot = (String) args.get(DetailsActivity.MOVIE_PLOT);
+            String mPlot = (String) args.get(DetailsActivity.MOVIE_PLOT);
             if(mPlot == null) {
-                mPlot = (String) getResources().getString(R.string.no_plot);
+                mPlot = getResources().getString(R.string.no_plot);
             }
             TextView   plotTextView = (TextView) rootView.findViewById(R.id.plot);
             plotTextView.setText(Html.fromHtml(mPlot));
@@ -90,7 +87,7 @@ public class DetailsFragment extends android.support.v4.app.Fragment {
 
             final CheckBox ckFavorite = (CheckBox) rootView.findViewById(R.id.check_favorite);
 
-            ckFavorite.setChecked(OrmHandler.isFavorite(mMovieId));;
+            ckFavorite.setChecked(OrmHandler.isFavorite(mMovieId));
 
             //(String title, String rating, String releaseDate, String plot, String movieid, String trailerJson, String posterPath)
             //mMovie = new LocalMovie(mTitle,mRating,mReleaseDate,mPlot, mMovieId, mJson, mUrl);
@@ -131,7 +128,7 @@ public class DetailsFragment extends android.support.v4.app.Fragment {
     }
 
     private void showTrailerDialog(String json) {
-        TrailerDialogFragment df = new TrailerDialogFragment().newInstance(json);
+        @SuppressWarnings("AccessStaticViaInstance") TrailerDialogFragment df = new TrailerDialogFragment().newInstance(json);
         android.support.v4.app.Fragment fr = getActivity().getSupportFragmentManager().findFragmentByTag(TrailerDialogFragment.TAG);
         if (fr == null) {
             df.show(getActivity().getSupportFragmentManager(), TrailerDialogFragment.TAG);

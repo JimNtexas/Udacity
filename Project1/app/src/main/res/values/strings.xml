@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Popular Movies</string>
-    <string name="action_settings">Options</string>
     <string name="loading_movies">Loading Movies</string>
     <string name="loading_msg">Please wait a moment\u2026</string>
     <string name="popularity_sort">Sort by Popularity</string>
@@ -10,4 +9,9 @@
     <string name="empty_poster_text">Click on a poster for movie details</string>
     <string name="no_plot">No description available</string>
     <string name="include_favorites">Include All Favorites</string>
+    <string name="most_popular">Most Popular</string>
+    <string name="highest_rated">Highest Rated</string>
+    <string name="trailers">Trailers</string>
+    <string name="poster_desc">Movie Poster</string>
+    <string name="youtube_desc">You Tube Logo</string>
 </resources>

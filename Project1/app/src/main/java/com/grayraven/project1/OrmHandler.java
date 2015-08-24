@@ -6,12 +6,13 @@ import com.orm.query.Condition;
 import com.orm.query.Select;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Class to manage Sugar ORM database operations
  */
-public class OrmHandler {
+class OrmHandler {
 
     static private final String TAG = "MovieOrmHandler";
 
@@ -45,7 +46,7 @@ public class OrmHandler {
         Log.i(TAG, "query size: " + dupQuery.count());
         if(dupQuery.count() > 0) {
             Log.i(TAG, m.getTitle() + " already exists in db, deleting old record");
-            List<LocalMovie> dups = dupQuery.list();
+            @SuppressWarnings("unchecked") List<LocalMovie> dups = dupQuery.list();
             dups.get(0).delete();
         }
 
@@ -58,7 +59,7 @@ public class OrmHandler {
                 .where(Condition.prop("movieid").eq(m.getMovieId()))
                 .limit("1");
 
-        List<LocalMovie> dups = dupQuery.list();
+        @SuppressWarnings("unchecked") List<LocalMovie> dups = dupQuery.list();
         if( dupQuery.count() > 0) {
             Log.i(TAG, "deleting favorite " + m.getTitle());
             dups.get(0).delete();
@@ -77,8 +78,9 @@ public class OrmHandler {
     }
 
     static List<Integer> getFavoriteIds() {
-        ArrayList<Integer> favorites = new ArrayList<Integer>();
+        @SuppressWarnings("Convert2Diamond") ArrayList<Integer> favorites = new ArrayList<Integer>();
         List<LocalMovie> movies = LocalMovie.listAll(LocalMovie.class);
+        Collections.sort(movies); //sort by rating
         for(LocalMovie movie : movies){
             favorites.add(Integer.parseInt(movie.getMovieId()));
         }

@@ -2,7 +2,7 @@ package com.grayraven.project1;
 
 import android.view.View;
 
-public interface SwipeInterface {
+interface SwipeInterface {
 
     void left2right(View v);
 

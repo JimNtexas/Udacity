@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="0dp"
-    android:background="@android:color/white"
     android:fillViewport="false">
 
 
@@ -14,11 +14,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Medium Text"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
             android:textAlignment="center"
-            android:textSize="36dp"
+            android:textSize="36sp"
             android:textStyle="bold"
             android:textColor="@android:color/white"
             android:background="@color/movie_blue_background"
@@ -27,7 +24,8 @@
             android:layout_gravity="center"
             android:layout_marginLeft="0dp"
             android:layout_marginRight="0dp"
-            android:gravity="center_horizontal" />
+            android:gravity="center_horizontal"
+            tools:ignore="ObsoleteLayoutParam" />
 
 
         <RelativeLayout
@@ -41,7 +39,9 @@
                 android:layout_width="wrap_content"
                 android:layout_gravity="center"
                 android:scaleType="centerInside"
-                android:paddingLeft="5dp" />
+                android:paddingLeft="5dp"
+                android:contentDescription="@string/poster_desc"
+                tools:ignore="RtlHardcoded,RtlSymmetry" />
 
 
             <CheckBox
@@ -50,9 +50,9 @@
                 android:layout_height="wrap_content"
                 style="@style/DetailText"
                 android:button="@drawable/star_selector"
-                android:text="Favorite"
                 android:layout_toRightOf="@id/poster"
-                android:layout_marginLeft="16dp" />
+                android:layout_marginLeft="16dp"
+                tools:ignore="RtlHardcoded" />
 
             <TextView
                 android:id="@+id/rating"
@@ -61,7 +61,8 @@
                 android:text="9.9/10.0"
                 android:layout_alignStart="@+id/check_favorite"
                 android:layout_marginLeft="16dp"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                tools:ignore="HardcodedText,RtlHardcoded" />
 
             <TextView
                 android:id="@+id/release_date"
@@ -69,20 +70,20 @@
                 android:layout_below="@+id/rating"
                 android:text="MMM dd, yyyy"
                 android:layout_alignStart="@id/check_favorite"
-                android:layout_marginLeft="16dp" />
+                android:layout_marginLeft="16dp"
+                tools:ignore="HardcodedText,RtlHardcoded" />
 
             <Button
                 android:id="@+id/button_trailers"
                 android:layout_alignStart="@id/release_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Trailers"
+                android:text="@string/trailers"
                 style="@style/DetailText"
                 android:layout_below="@+id/release_date"
                 android:clickable="true"
                 android:focusable="true"
-                android:elevation="1dp"
-                android:translationZ="1dp"/>
+               />
         </RelativeLayout>
     <ScrollView
         android:layout_width="fill_parent"
@@ -95,10 +96,9 @@
                 android:gravity="fill|left"
                 android:layout_gravity="fill"
                 android:textSize="18sp"
-                android:layout_below="@id/poster"
-                android:text="detail text about the movie here"
                 android:layout_margin="10dp"
-                android:padding="10dp" />
+                android:padding="10dp"
+                tools:ignore="RtlHardcoded,ScrollViewSize" />
     </ScrollView>
 
 

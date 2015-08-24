@@ -1,5 +1,6 @@
 package com.grayraven.project1;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -11,7 +12,6 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -36,6 +36,7 @@ import java.util.List;
 import info.movito.themoviedbapi.model.MovieDb;
 
 
+@SuppressWarnings({"WeakerAccess", "deprecation"})
 public class MainActivity extends ActionBarActivity {
 
     private final String TAG = "MovieMain";
@@ -103,7 +104,7 @@ public class MainActivity extends ActionBarActivity {
                     DetailsFragment fragment = new DetailsFragment();
                     fragment.setArguments(args);
                     FragmentManager fm =  getSupportFragmentManager();
-                    FragmentTransaction ft = fm.beginTransaction();
+                    //FragmentTransaction ft = fm.beginTransaction();
                     fm.beginTransaction()
                             .replace(R.id.tablet_detail, fragment, DetailsFragment.TAG).commit();
 
@@ -170,6 +171,7 @@ public class MainActivity extends ActionBarActivity {
         return super.onPrepareOptionsMenu(menu);
     }
 
+    @SuppressLint("CommitPrefEdits")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         //Note: according to http://developer.android.com/guide/topics/ui/menus.html you can't have a checkable group in the options menu,
@@ -195,6 +197,7 @@ public class MainActivity extends ActionBarActivity {
         return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 
+    @SuppressLint("CommitPrefEdits")
     public void onClickFavorite(MenuItem item) {
         mIncludeFavorites = !item.isChecked();
         item.setChecked(mIncludeFavorites);
@@ -252,7 +255,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void SetMenuTitle() {
-        String title = (mSortPreference == MovieService.SORT_BY_POPULARITY ? getString(R.string.most_popular) : getString(R.string.highest_rated));
+        String title = (mSortPreference.equals(MovieService.SORT_BY_POPULARITY) ? getString(R.string.most_popular) : getString(R.string.highest_rated));
         if(mOptions != null) {
             mOptions.findItem(R.id.action_settings).setTitle(title);
         }
