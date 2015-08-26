@@ -52,6 +52,8 @@ public class MainActivity extends ActionBarActivity {
     private boolean mTablet = false;
     private boolean mIncludeFavorites = false;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,11 +93,11 @@ public class MainActivity extends ActionBarActivity {
                 String path = item.getPosterPath(); //todo: debug only
                 Log.i(TAG, "raw poster path: " + item.getPosterPath());
 
-                if(mTablet) {
+                if (mTablet) {
                     Bundle args = new Bundle();
                     args.putString(DetailsActivity.MOVIE_TITLE, title);
                     args.putString(DetailsActivity.MOVIE_TRAILER_JSON, json);
-                    url = MovieService.getPosterUrl(MovieService.POSTER_SIZE_SMALL,item.getPosterPath());
+                    url = MovieService.getPosterUrl(MovieService.POSTER_SIZE_SMALL, item.getPosterPath());
                     args.putString(DetailsActivity.MOVIE_URL, url);
                     args.putString(DetailsActivity.MOVIE_PLOT, plot);
                     args.putString(DetailsActivity.MOVIE_RELEASE_DATE, releaseDate);
@@ -103,7 +105,7 @@ public class MainActivity extends ActionBarActivity {
                     args.putString(DetailsActivity.MOVIE_RATING, rating);
                     DetailsFragment fragment = new DetailsFragment();
                     fragment.setArguments(args);
-                    FragmentManager fm =  getSupportFragmentManager();
+                    FragmentManager fm = getSupportFragmentManager();
                     //FragmentTransaction ft = fm.beginTransaction();
                     fm.beginTransaction()
                             .replace(R.id.tablet_detail, fragment, DetailsFragment.TAG).commit();
@@ -115,7 +117,7 @@ public class MainActivity extends ActionBarActivity {
                     intent.putExtra(DetailsActivity.MOVIE_TITLE, title);
                     url = MovieService.getPosterUrl(MovieService.POSTER_SIZE_STANDARD, item.getPosterPath());
                     intent.putExtra(DetailsActivity.MOVIE_URL, url);
-                    intent.putExtra(DetailsActivity.MOVIE_PLOT,plot);
+                    intent.putExtra(DetailsActivity.MOVIE_PLOT, plot);
                     intent.putExtra(DetailsActivity.MOVIE_RELEASE_DATE, releaseDate);
                     intent.putExtra(DetailsActivity.MOVIE_ID, movieId);
                     intent.putExtra(DetailsActivity.MOVIE_TRAILER_JSON, json);
@@ -127,15 +129,17 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-        StartMovieService();
+        Log.d(TAG, "Starting service from ONCREATE");
+        StartMovieService(false); // the movie service will only download if it's list of movies is empty
     }
 
-    private void StartMovieService() {
-
+    private void StartMovieService(boolean refresh) {
+        Log.i(TAG, "Starting movie service.  Refresh: " + refresh);
         if(isNetworkConnected()) {
             Intent service = new Intent(getApplicationContext(), MovieService.class);
             service.putExtra(MovieService.SORT_PREFERENCE, mSortPreference);
             service.putExtra(MovieService.INCLUDE_FAVORITES, mIncludeFavorites);
+            service.putExtra(MovieService.REFRESH_DATA, refresh);
             service.setPackage("com.grayraven.project1");
             Log.i(TAG, "starting service");
             ShowLoadingProgress();
@@ -183,14 +187,16 @@ public class MainActivity extends ActionBarActivity {
                 mSortPreference = MovieService.SORT_BY_POPULARITY;
                 item.setChecked(true);
                 mOptions.findItem(R.id.menuRated).setChecked(false);
-                StartMovieService();
+                Log.d(TAG, "starting movie service from POPULARITY");
+                StartMovieService(true);
                 break;
             case R.id.menuRated:
                 Log.i(TAG, "sorting by rated");
                 mSortPreference = MovieService.SORT_BY_USER_RATING;
                 item.setChecked(true);
                 mOptions.findItem(R.id.menuPopularity).setChecked(false);
-                StartMovieService();
+                Log.d(TAG, "starting movie service from RATINGS");
+                StartMovieService(true);
                 break;
         }
         mPrefs.edit().putString(ACTIVITY_SORT_PREFERENCE, mSortPreference).commit();
@@ -202,7 +208,8 @@ public class MainActivity extends ActionBarActivity {
         mIncludeFavorites = !item.isChecked();
         item.setChecked(mIncludeFavorites);
         mPrefs.edit().putBoolean(INCLUDE_FAVS_PREFERENCE,mIncludeFavorites).commit();
-        StartMovieService();
+        Log.d(TAG, "starting movie service from FAVORITES");
+        StartMovieService(true);
     }
 
     private final BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
@@ -260,6 +267,36 @@ public class MainActivity extends ActionBarActivity {
             mOptions.findItem(R.id.action_settings).setTitle(title);
         }
         Log.d(TAG, "TITLE: " + title);
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.i(TAG, "onDestroy");
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onResume() {
+        Log.i(TAG, "onResume");
+        super.onResume();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.i(TAG, "onStop");
+        super.onStop();
+    }
+
+    @Override
+    protected void onRestart() {
+        Log.i(TAG, "onRestart");
+        super.onRestart();
+    }
+
+    @Override
+    protected void onStart() {
+        Log.i(TAG, "OnStart");
+        super.onStart();
     }
 }
 
