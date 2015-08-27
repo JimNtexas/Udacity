@@ -94,19 +94,11 @@ public class MovieService extends IntentService {
                 mymovies.add(new ExtendedMovie(db));
             }
 
-            Log.i(TAG, "BEFORE SORT [title - popularity - rating:");
-        /*for(ExtendedMovie m : mymovies) {
-           Log.i(TAG, m.getTitle() + " - " + m.getmDb().getPopularity() + " - " + m.getmDb().getVoteAverage() + (m.isFavorite() ? "*" : ""));
-        }*/
-
             boolean include_favorites = intent.getBooleanExtra(INCLUDE_FAVORITES, false);
             if (include_favorites) {
+                Log.i(TAG, "Starting favorite sort");
                 AddFavoriteIfNotPresent();
                 Collections.sort(mymovies);
-                Log.i(TAG, "AFTER Favorites sort [title - popularity - rating:");
-           /* for(ExtendedMovie m : mymovies) {
-                Log.i(TAG, m.getTitle() + " - " + m.getmDb().getPopularity() + " - " + m.getmDb().getVoteAverage() + (m.isFavorite() ? "*" : ""));
-            }*/
             }
         }
 

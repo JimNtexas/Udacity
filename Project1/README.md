@@ -3,6 +3,10 @@ Udacity NanoDegree Project One - Stage Two
 Jim Howard
 jim@grayraven.com
 
+Stage Two resubmit:
+
+Modified application to avoid downloading movie data needlessly.
+
 Stage Two changes:
 
 Implemented master-detail pattern for tablet devices.
